@@ -57,7 +57,7 @@ PRINT <value>
 Evaluates the expression as a 16-bit integer and prints the hex
 and decimal value. This command is useful for testing out the
 interpreter's expression evaluator and for finding the values
-of symbols loaded from a MAP file.\
+of symbols loaded from a MAP file.
 ''')
 
   def do_asm(self, line):
@@ -95,7 +95,7 @@ of symbols loaded from a MAP file.\
   def help_asm(self): self.write('''\
 ASM [<addr>]
 Disassemble instructions at the specified address. If the address is ommitted,
-disassembly continues from the last disassembled address.\
+disassembly continues from the last disassembled address.
 ''')
 
   def do_l(self, line):
@@ -140,7 +140,7 @@ L [<num>]
 This command displays the source lines around the current PC
 value if a MAP file is loaded. The optional argument indicates
 the number of lines to display. The line corresponding to the
-current PC is centered in the display.\
+current PC is centered in the display.
 ''')
 
   def do_bf(self, line):
@@ -161,7 +161,7 @@ current PC is centered in the display.\
   def help_bf(self): self.write('''\
 BF <Addr1> <Addr2> <data>
 This command fills the range of memory from Addr1 through Addr2 with
-the 8-bit data value.\
+the 8-bit data value.
 ''')
 
   def do_br(self, line):
@@ -226,7 +226,7 @@ if a MAP file is loaded). The second form, 'BR -<bpnum>' removes
 a breakpoint whose number is given. The first breakpoint is 0.
 Breakpoint numbers can be found by issuing a 'BR' command by
 itself which simply lists all breakpoints. The final form of this
-command, 'BR -all' removes all breakpoints.\
+command, 'BR -all' removes all breakpoints.
 ''')
 
   def do_bulk(self, line):
@@ -240,7 +240,7 @@ command, 'BR -all' removes all breakpoints.\
 
   def help_bulk(self): self.write('''\
 BULK
-This command sets all memory locations in internal EEPROM to $FF\
+This command sets all memory locations in internal EEPROM to $FF
 ''')
 
   def do_call(self, line):
@@ -266,7 +266,7 @@ This command sets all memory locations in internal EEPROM to $FF\
   def help_call(self): self.write('''\
 CALL <address>
 Begin execution at the specified address as a subroutine call. The
-corresponding RTS instruction terminates execution.\
+corresponding RTS instruction terminates execution.
 ''')
 
   def do_cyc(self, line):
@@ -284,7 +284,7 @@ corresponding RTS instruction terminates execution.\
 CYC ['reset']
 With no parameters, this command displays the number of cycles executed so far.
 The command 'CYC reset' resets the cycle counter to 0 and resets (i.e., clears)
-the parallel I/O waveform display.\
+the parallel I/O waveform display.
 ''')
 
   def do_go(self, line):
@@ -311,7 +311,7 @@ GO [<address>]
 Execution begins at the specified address, or at the current PC value if no
 address is given. Execution terminates at a breakpoint or an SWI instruction.
 The cycle counter is reset to 0 and the parallel I/O waveform display is
-reset.\
+reset.
 ''')
   def do_cd(self, line):
     "CD <directory>"
@@ -327,7 +327,7 @@ reset.\
     self.write('''\
 CD [directory]
 Change the working directory to the one specified. If no
-directory is specified, the current one is displayed.\
+directory is specified, the current one is displayed.
 ''')
 
   def do_load(self, line):
@@ -345,7 +345,7 @@ directory is specified, the current one is displayed.\
   def help_load(self): self.write('''\
 LOAD <filename>
 The S19 file specified is loaded into memory. If a MAP file
-is present in the same directory, it is loaded too.\
+is present in the same directory, it is loaded too.
 ''')
 
   def do_loadmap(self, line):
@@ -376,7 +376,7 @@ LOADMAP <mapfilename>
 This command loads a MAP file with the given filename. Normally,
 a MAP file is loaded when an S19 file is loaded, using the S19
 file's name and an extension of MAP. This command can be used
-to load an alternate MAP file.\
+to load an alternate MAP file.
 ''')
 
   def do_md(self, line):
@@ -394,7 +394,7 @@ to load an alternate MAP file.\
 MD [<address1> [<address2>]]
 Memory beginning at address1 is displayed up to address2, or for 256 bytes
 if address2 is ommitted. If address1 is ommitted, memory is displayed starting
-from the last display address.\
+from the last display address.
 ''')
 
   def do_mm(self, line):
@@ -430,7 +430,7 @@ MM <address> [<value>]
 This command enters memory modify mode at the given address. Each
 byte can be left unchanged by pressing ENTER, or a new value can
 be entered to overwrite the current value. Memory modify mode is
-terminated when a period '.' is entered.\
+terminated when a period '.' is entered.
 ''')
 
   def do_move(self, line):
@@ -458,7 +458,7 @@ terminated when a period '.' is entered.\
   def help_move(self): self.write('''\
 MOVE <address1> <address2> [<dest>]
 Copy memory from address1 through address2 to memory starting at dest. If
-dest is ommitted, it defaults to address+1.\
+dest is ommitted, it defaults to address+1.
 ''')
 
   def do_p(self, line):
@@ -474,7 +474,7 @@ dest is ommitted, it defaults to address+1.\
   def help_p(self): self.write('''\
 P
 Proceed to execute code at the current program counter. The cycle
-counter and parallel I/O waveform display are unaffected.\
+counter and parallel I/O waveform display are unaffected.
 ''')
 
   def do_rm(self, line):
@@ -538,7 +538,7 @@ With no arguments, this command displays the current register set.
 If a parameter is given, the register with the given name can be
 modified. The third optional argument sets the value of the
 register. If omitted, the current value is printed and a new
-value is accepted from the user.\
+value is accepted from the user.
 ''')
 
   def do_stopwhen(self, line):
@@ -558,7 +558,7 @@ value is accepted from the user.\
 STOPWHEN <cycles>
 Execution continues at the current program location and stops either
 when an SWI is encountered or the given number of cycles have been
-executed.\
+executed.
 ''')
 
   def do_s(self, line):
@@ -585,7 +585,7 @@ executed.\
 S
 Skip over subroutine call. This command is equivalent to
 issuing a STOPAT command with the target address equal to
-the last 16-bit value on the stack.\
+the last 16-bit value on the stack.
 ''')
 
   def do_stopat(self, line):
@@ -608,7 +608,7 @@ the last 16-bit value on the stack.\
 
   def help_stopat(self): self.write('''\
 STOPAT <addr>
-Begin execution at the current PC and stop when the given address is reached.\
+Begin execution at the current PC and stop when the given address is reached.
 ''')
 
   def evbu_trace(self, line, bforce):
@@ -635,21 +635,21 @@ Begin execution at the current PC and stop when the given address is reached.\
   def help_t(self): self.write('''\
 T [n]
 Trace through program execution for 'n' instructions, or just 1 instruction
-if no parameter is specified.\
+if no parameter is specified.
 ''')
 
   def help_tn(self): self.write('''\
 TN [n]
 Trace through program execution for 'n' instructions, or just 1 instruction
 if no parameter is specified. If the next instruction is a branch, it is
-NOT TAKEN regardless of the condition codes state.\
+NOT TAKEN regardless of the condition codes state.
 ''')
 
   def help_ty(self): self.write('''\
 TY [n]
 Trace through program execution for 'n' instructions, or just 1 instruction
 if no parameter is specified. If the next instruction is a branch, it is
-TAKEN regardless of the condition codes state.\
+TAKEN regardless of the condition codes state.
 ''')
 
   def do_verf(self, line):
@@ -665,7 +665,7 @@ TAKEN regardless of the condition codes state.\
 VERF <filename>
 This command loads the S19 file specified and compares its contents with
 the current contents of memory. The first discrepancy (if any) is
-reported.\
+reported.
 ''')
 
   def do_pshb(self, line):
@@ -678,7 +678,7 @@ reported.\
 
   def help_pshb(self): self.write('''\
 PSHB byte
-This command pushes the 8-bit 'byte' parameter onto the stack.\
+This command pushes the 8-bit 'byte' parameter onto the stack.
 ''')
 
   def do_pshw(self, line):
@@ -691,7 +691,7 @@ This command pushes the 8-bit 'byte' parameter onto the stack.\
 
   def help_pshw(self): self.write('''\
 PSHW word
-This command pushes the 16-bit 'word' parameter onto the stack.\
+This command pushes the 16-bit 'word' parameter onto the stack.
 ''')
 
 
@@ -715,7 +715,7 @@ STOPWHEN -- Run for number of cycles  |  @NNNN   : Octal numbers
 T        -- Single-step instructions  |  sym     : Symbol if MAP file loaded
 TN       -- Skip next branch          |
 TY       -- Take next branch          | Default base is hexadecimal. The
-                                      | leading $ sign is optional.\
+                                      | leading $ sign is optional.
 ''')
 
 if __name__ == "__main__":
