@@ -1201,7 +1201,7 @@ def DAA(simstate):
   lhb = simstate.ucState.A & 0x0F
 
   offset = cout = 0
-  if c==0 and h==0:
+  if c == 0 and h == 0:
     if uhb <= 9 and lhb <= 9:
       pass
     elif uhb <= 8 and lhb >= 10:
@@ -1212,13 +1212,13 @@ def DAA(simstate):
     elif uhb >= 9 and lhb >= 10:
       offset = 0x66
       cout = 1
-  elif c==0 and h==1:
+  elif c == 0 and h == 1:
     if uhb <= 9 and lhb <= 3:
       offset = 0x06
     elif uhb >= 10 and lhb <= 3:
       offset = 0x66
       cout = 1
-  elif c==1 and h==0:
+  elif c == 1 and h == 0:
     if uhb <= 2 and lhb <= 9:
       offset = 0x60
       cout = 1

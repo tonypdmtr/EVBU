@@ -3,6 +3,7 @@ Top-level window (menus, statusbar, etc.) for EVBU GUI
 '''
 
 import sys
+import os
 import string
 import queue
 import time
@@ -94,11 +95,17 @@ class EVBUFrame(wx.Frame):
     self.menubar = wx.MenuBar()
     self.menuIDs = {}
     fileMenu = wx.Menu()
+
     #self.menuIDs['Preferences'] = fileMenu.preferencesID = wx.NewIdRef()
     #fileMenu.Append(fileMenu.preferencesID, "&Preferences...\tCtrl-P", "Edit global properties for this application")
     #fileMenu.AppendSeparator()
+
+    self.menuIDs['Load'] = fileMenu.loadID = wx.NewIdRef()
+    fileMenu.Append(fileMenu.loadID, "&Load\tCtrl-L", "Load an S19 file")
+
     self.menuIDs['Exit'] = fileMenu.exitID = wx.NewIdRef()
     fileMenu.Append(fileMenu.exitID, "E&xit\tCtrl-Q", "Exit the program")
+
     self.menubar.Append(fileMenu, "&File")
 
     simMenu = wx.Menu()
@@ -116,6 +123,7 @@ class EVBUFrame(wx.Frame):
 
     self.Bind(wx.EVT_CLOSE,self.OnCloseWindow) #wx.EVT_CLOSE(self, self.OnCloseWindow)
    #self.Bind(wx.EVT_MENU,self.OnPreferences,id=fileMenu.preferencesID) #wx.EVT_MENU(self, fileMenu.preferencesID, self.OnPreferences)
+    self.Bind(wx.EVT_MENU,self.OnFileLoad,id=fileMenu.loadID) #wx.EVT_MENU(self, fileMenu.loadID, self.OnFileLoad)
     self.Bind(wx.EVT_MENU,self.OnCloseWindow,id=fileMenu.exitID) #wx.EVT_MENU(self, fileMenu.exitID, self.OnCloseWindow)
     self.Bind(wx.EVT_MENU,self.OnAbout,id=helpMenu.aboutID) #wx.EVT_MENU(self, helpMenu.aboutID, self.OnAbout)
     self.Bind(wx.EVT_MENU,self.OnSimStop,id=simMenu.stopID) #wx.EVT_MENU(self, simMenu.stopID, self.OnSimStop)
@@ -123,6 +131,7 @@ class EVBUFrame(wx.Frame):
     accel = wx.AcceleratorTable([ \
               (wx.ACCEL_CTRL, ord('q'), fileMenu.exitID), \
     #         (wx.ACCEL_CTRL, ord('p'), fileMenu.preferencesID), \
+              (wx.ACCEL_CTRL, ord('l'), fileMenu.loadID), \
               (wx.ACCEL_CTRL, ord('c'), simMenu.stopID)])
     self.SetAcceleratorTable(accel)
 
@@ -186,6 +195,10 @@ class EVBUFrame(wx.Frame):
 
   def OnPreferences(self, event): pass
 
+  def OnFileLoad(self, event):
+    line = wx.FileSelector('Select S19 file', os.getcwd(), '', '.s19', 'S19 files (*.s19)|*.s19|All files (*.*)|*.*', wx.FD_OPEN|wx.FD_FILE_MUST_EXIST, self)
+    if line: self.queue.put(f'load {line}')
+
   def OnAbout(self, event):
     aboutText = '''\
 EVBU : A simulator for the Motorola 68HC11
@@ -194,7 +207,7 @@ EVBU Version %d.%d
 PySim11 Version %d.%d
 
 Andrew Sterian
-Padnos School of Engineering
+Padnos College of Engineering & Computing
 Grand Valley State University
 <steriana@gvsu.edu>
 <http://claymore.engineer.gvsu.edu/~steriana/Python>
@@ -296,7 +309,7 @@ Modified for Python3 by <tonyp@acm.org>
     self.handlerqueue.put((self.OnSimEnd_handler, ()))
     wx.PostEvent(self, wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, self.handlerqueuebuttonid))
 
-if __name__=="__main__":
+if __name__ == "__main__":
   class MyApp(wx.App):
 
       # wx.Windows calls this method to initialize the application

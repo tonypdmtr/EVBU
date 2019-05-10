@@ -4,7 +4,7 @@
   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
   <META HTTP-EQUIV="Description" CONTENT="
 BEGIN PYTHON-PACKAGE-INFO 1.0
-Current-Version:        0.5
+Current-Version:        0.6
 Title:                  EVBU - An Open Source 68HC11 Simulator
 Home-page:              http://claymore.engineer.gvsu.edu/~steriana/Python
 Description:            Simulates a 68HC11 microcontroller environment
@@ -39,7 +39,7 @@ END PYTHON-PACKAGE-INFO
 <BLOCKQUOTE>
   <P><A HREF="http://claymore.engineer.gvsu.edu/~steriana"><FONT
    SIZE="-1">Andrew Sterian</FONT></A><FONT SIZE="-1"><BR>
-  Padnos School of Engineering<BR>
+  Padnos College of Engineering &amp; Computing<BR>
   Grand Valley State University</FONT></P>
 </BLOCKQUOTE>
 
@@ -48,11 +48,11 @@ CELLPADDING="0">
   <TR>
     <TD>Top-Level | <A HREF="buffalo.html">BUFFALO Emulation</A> | <A HREF="periphs.html">Peripheral Emulation</A> |
     <A HREF="waveform.html">Waveform I/O</A></TD>
-    <TD ALIGN="RIGHT"><FONT SIZE="-1">Version 0.5</FONT></TD>
+    <TD ALIGN="RIGHT"><FONT SIZE="-1">Version 0.6</FONT></TD>
   </TR>
   <TR>
     <TD><!-- --></TD>
-    <TD ALIGN="RIGHT"><FONT SIZE="-1">March 10, 2002</FONT></TD>
+    <TD ALIGN="RIGHT"><FONT SIZE="-1">July 17, 2004</FONT></TD> 
   </TR>
   <TR>
     <TD>
@@ -382,6 +382,18 @@ hello     FCC 'Hello!'
 <P><A NAME="History"></A></P>
 
 <H2>History</H2>
+
+  <P>Version 0.6 -- July 17, 2004
+  <UL>
+    <LI>Fixed an error with the implementation of the <TT>inchar()</TT>
+    BUFFALO function.</LI>
+    <LI>Added <TT>cd</TT> command to change directories.</LI>
+    <LI>The up-arrow and down-arrow keys now recall previous commands.</LI>
+    <LI>Pressing the ESC key now clears the input buffer.</LI>
+    <LI>Commands may now be in uppercase or lowercase.</LI>
+    <LI>The File menu has a new Load option (with hotkey Ctrl-L) to bring
+    up a dialog box for loading an S19 file.</LI>
+  </UL>
 
   <P>Version 0.5 -- March 10, 2002
   <UL>

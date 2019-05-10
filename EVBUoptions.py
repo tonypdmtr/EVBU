@@ -6,7 +6,7 @@ from safestruct import *
 SetDebug(0)
 
 EVBUVersionMajor = 0
-EVBUVersionMinor = 5
+EVBUVersionMinor = 6
 
 import sys
 import os

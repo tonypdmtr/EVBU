@@ -417,34 +417,34 @@ class PIO(SafeStruct):
   def CheckInputCaptureAndPA(self, bit, newPAI, atTime):
     mask = 1 << bit
     diff = (self.PAI ^ newPAI) & mask
-    if diff==0: return
+    if diff == 0: return
 
     tctl2 = self.memory.readUns8(self.memory.TCTL2)
     rising  = newPAI & mask == mask
     falling = not rising
 
-    if bit==0:
+    if bit == 0:
       action = tctl2 & (EDG3B|EDG3A)
       if (   (action == EDG3A and rising) \
           or (action == EDG3B and falling) \
           or (action == EDG3A|EDG3B) \
          ):
         self.events.notifyEvent(self.events.IC3, (atTime,))
-    elif bit==1:
+    elif bit == 1:
       action = tctl2 & (EDG2B|EDG2A)
       if (   (action == EDG2A and rising) \
           or (action == EDG2B and falling) \
           or (action == EDG2A|EDG2B) \
          ):
         self.events.notifyEvent(self.events.IC2, (atTime,))
-    elif bit==2:
+    elif bit == 2:
       action = tctl2 & (EDG1B|EDG1A)
       if (   (action == EDG1A and rising) \
           or (action == EDG1B and falling) \
           or (action == EDG1A|EDG1B) \
          ):
         self.events.notifyEvent(self.events.IC1, (atTime,))
-    elif bit==3:
+    elif bit == 3:
       if self.pactl_cache & I4_O5 == I4_O5:
         action = (tctl2 & (EDG4B|EDG4A))
         if (   (action == EDG4A and rising) \
@@ -452,11 +452,11 @@ class PIO(SafeStruct):
             or (action == EDG4A|EDG4B) \
            ):
           self.events.notifyEvent(self.events.IC4, (atTime,))
-    elif bit==7:
+    elif bit == 7:
       # Check that PA is enabled, PA7 is an input, event counter mode
       if self.pactl_cache & (DDRA7|PAEN|PAMOD) == PAEN:
         # Now check to see if we got the right edge
-        if (   (self.pactl_cache & PEDGE==0 and falling) \
+        if (   (self.pactl_cache & PEDGE == 0 and falling) \
             or (self.pactl_cache & PEDGE!=0 and rising) \
            ):
           self.pacnt = self.pacnt+1

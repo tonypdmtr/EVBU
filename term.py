@@ -9,6 +9,36 @@ import string
 
 #---------------------------------------------------------------------------
 
+#
+# History -- manage a history buffer of input lines
+#
+
+class History:
+  def reset_pointer(self): self.pointer = 0
+
+  def flush(self):
+    self.lines = []
+    self.reset_pointer()
+
+  def add(self, line):
+    self.lines.append(line)
+    if len(self.lines) > self.size: del self.linex[0]
+    self.reset_pointer()
+
+  def recall_up(self):
+    if len(self.lines) == 0: return ''
+    self.pointer = (self.pointer + 1 + len(self.lines)) % len(self.lines)
+    return self.lines[self.pointer]
+
+  def recall_down(self):
+    if len(self.lines) == 0: return ''
+    self.pointer = (self.pointer + 1) % len(self.lines)
+    return self.lines[self.pointer]
+
+  def __init__(self, size=100):
+    self.size = size
+    self.flush()
+
 ##############################################################
 #
 #     Term -- terminal with read-only display and single-input line
@@ -40,6 +70,9 @@ class Term(wx.Window):
     # lines.
     self.cbreak = 0
 
+    # List of previously entered lines for recalling with up/down arrows
+    self.history = History(100)
+
     dc = wx.ClientDC(parent)
     dc.SetFont(font)
     ch = dc.GetCharHeight()
@@ -57,12 +90,12 @@ class Term(wx.Window):
     # Slop approach
     h = dimension[1]*ch + 8
 
-    self.display = wx.TextCtrl(self, 200, "", wx.Point(0,0), wx.Size(w,h), wx.TE_MULTILINE|wx.TE_READONLY|wx.TE_RICH|wx.TE_NOHIDESEL)
+    self.display = wx.TextCtrl(self, 200, '', wx.Point(0,0), wx.Size(w,h), wx.TE_MULTILINE|wx.TE_READONLY|wx.TE_RICH|wx.TE_NOHIDESEL)
 
     sep = 4
     h2 = ch + 8
 
-    self.input   = MyTextCtrl(self, 201, "", wx.Point(0,h+sep), wx.Size(w,h2), wx.TE_PROCESS_ENTER|wx.TE_RICH)
+    self.input   = MyTextCtrl(self, 201, '', wx.Point(0,h+sep), wx.Size(w,h2), wx.TE_PROCESS_ENTER|wx.TE_RICH)
 
     self.display.SetFont(font)
     self.display.SetDefaultStyle(wx.TextAttr(wx.GREEN, wx.BLACK, font))
@@ -108,7 +141,12 @@ class Term(wx.Window):
     self.input.Clear()
 
   def RawChar(self, keycode):
-    if self.cbreak and (0 < keycode < 256): self.queue.put(chr(keycode))
+    if self.cbreak:
+      if 0 < keycode < 256: self.queue.put(chr(keycode))
+    else:
+      if keycode == 315: self.input.SetValue(self.history.recall_up())          # Up-arrow (Win7)
+      elif keycode == 317: self.input.SetValue(self.history.recall_down())      # Down-arrow (Win7)
+      elif keycode == 27: self.input.Clear()                                    # Escape
 
   def OnInput(self, event):
     if self.cbreak:
@@ -121,6 +159,8 @@ class Term(wx.Window):
 
     # Send s to the EVBU command queue
     self.queue.put(s)
+    if s: self.history.add(s)
+    self.history.reset_pointer()
 
   def write(self, s):
     '''Write a big help string one line at a time, to improve scrolling behavior of wx.TextCtrl.'''
@@ -137,7 +177,7 @@ class Term(wx.Window):
     except queue.Empty: pass
 
 #---------------------------------------------------------------------------
-if __name__=="__main__":
+if __name__ == '__main__':
     class MyFrame(wx.Frame):
 
       def __init__(self, parent, id, title):
@@ -156,7 +196,7 @@ if __name__=="__main__":
         def OnInit(self):
 
             # Create an instance of our customized Frame class
-            frame = MyFrame(None, -1, "This is a test")
+            frame = MyFrame(None, -1, 'This is a test')
             frame.Show(True)
 
             # Tell wx.Windows that this is our main window

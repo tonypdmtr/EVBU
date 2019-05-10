@@ -285,7 +285,7 @@ class LAPanel(wx.Panel):
     self.startTimeText.SetValue(str(newStartTime))
 
   def OnZoomAll(self, event):
-    if len(self.waveforms)==0: return
+    if len(self.waveforms) == 0: return
 
     (width,h) = self.waveforms[0].data.GetClientSize()
 

@@ -111,6 +111,8 @@ class Cmdbase:
     if cmd == '?': cmd = 'help'
     if cmd == '': return self.default(line)
     else:
+      cmd = cmd.lower()
+      if cmd == 'help': arg = arg.lower()
       try: func = getattr(self, 'do_' + cmd)
       except AttributeError: return self.default(line)
       return func(arg)
@@ -179,7 +181,7 @@ class Cmdbase:
       cmds_per_line,junk=divmod(maxcol,cmdlen)
       col=cmds_per_line
       for cmd in cmds:
-        if col==0: self.write('\n')
+        if col == 0: self.write('\n')
         self.write( (("%-"+str(cmdlen)+"s") % cmd))
         col = (col+1) % cmds_per_line
       self.write('\n')

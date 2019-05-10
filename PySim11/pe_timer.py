@@ -187,7 +187,7 @@ class Timer(SafeStruct):
     (i.e., sim.cycles). In PySim11, the simulator cycles are updated
     *before* calling update() for peripherals. Example situation:
        sim.cycles = 1000, atTime = 998
-    Now, if self.lastsimcycles==self.sim.cycles this means that our
+    Now, if self.lastsimcycles == self.sim.cycles this means that our
     own update() function has already been called and self.cnt
     must be reduced somewhat to get the actual count. Otherwise,
     self.lastsimcycles < self.sim.cycles and this means that our
@@ -285,11 +285,11 @@ class Timer(SafeStruct):
       self.events.notifyEvent(self.events.OC5)
 
   def readTIC123(self, addr, bits, val, rw):
-    if addr==self.memory.TIC1:
+    if addr == self.memory.TIC1:
       self.memory.writeRawUns16(self.memory.TIC1, self.tic1)
-    elif addr==self.memory.TIC2:
+    elif addr == self.memory.TIC2:
       self.memory.writeRawUns16(self.memory.TIC2, self.tic2)
-    elif addr==self.memory.TIC3:
+    elif addr == self.memory.TIC3:
       self.memory.writeRawUns16(self.memory.TIC3, self.tic3)
 
   def readTIC4(self, addr, bits, val, rw):

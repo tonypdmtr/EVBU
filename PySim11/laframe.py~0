@@ -35,7 +35,7 @@ class LAFrame(wx.Frame):
         else:
           wx.MessageBox("Do not close this window while EVBU is running.", "Bad user!", wx.OK|wx.CENTRE)
 
-if __name__ == "__main__":
+if __name__=="__main__":
   app = wx.PySimpleApp()
   f = LAFrame(None, -1, "Stuff")
   f.Show(1)

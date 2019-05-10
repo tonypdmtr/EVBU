@@ -346,7 +346,7 @@ class LAWaveformProperties(wx.Dialog):
     d['IO'] = PortInfo[d['pin']][0]
     return d
 
-if __name__=="__main__":
+if __name__ == "__main__":
   app = wx.App()
   d = LAWaveformProperties(None, -1, "Waveform Properties", wx.Point(-1,-1))
   if d.ShowModal() == wx.ID_OK:

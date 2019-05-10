@@ -278,7 +278,7 @@ class LAData(wx.Window):
     self.Refresh()
 
   def Append(self, T, V, autoRefresh=1):
-    assert V==0 or V==1
+    assert V == 0 or V == 1
     assert repr(type(T)) == "<class 'int'>"
 
     if self.events: assert T > self.events[-1][0]
@@ -286,7 +286,7 @@ class LAData(wx.Window):
     if autoRefresh: self.Refresh()
 
   def AppendRel(self, DT, V, autoRefresh=1):
-    assert V==0 or V==1
+    assert V == 0 or V == 1
     assert type(DT) in [types.LongType, types.IntType]
     assert DT > 0
 

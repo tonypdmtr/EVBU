@@ -3,6 +3,7 @@ Command-line interface to PySim11 that mimics the Motorola 68HC11 EVBU
 '''
 
 import sys
+import os
 import string
 import cmdbase
 
@@ -23,7 +24,7 @@ class EVBUCmd(cmdbase.Cmdbase):
     self.queue = queue
     self.write('''\
 68HC11 EVBU Simulator Version %d.%d. PySim11 Version %d.%d.
-Copyright 1999-2002 Andrew Sterian.
+Copyright 1999-2004 Andrew Sterian.
 Python 3 and wxPython Phoenix adaptation (2019) by Tony Papadimitriou <tonyp@acm.org>
 
 EVBU comes with ABSOLUTELY NO WARRANTY. This is free software licensed under
@@ -271,7 +272,7 @@ corresponding RTS instruction terminates execution.\
   def do_cyc(self, line):
     "CYC ['reset']"
     if len(line):
-      if line=='reset':
+      if line == 'reset':
         self.simstate.cycles = 0
         self.simstate.ucEvents.notifyEvent(self.simstate.ucEvents.CycReset)
       else:
@@ -312,6 +313,22 @@ address is given. Execution terminates at a breakpoint or an SWI instruction.
 The cycle counter is reset to 0 and the parallel I/O waveform display is
 reset.\
 ''')
+  def do_cd(self, line):
+    "CD <directory>"
+    if line:
+      try:
+        os.chdir(line)
+      except Exception as detail:
+        if detail: self.write(str(detail)+'\n')
+        return
+    self.write(os.getcwd()+'\n')
+
+  def help_cd(self):
+    self.write('''\
+CD [directory]
+Change the working directory to the one specified. If no
+directory is specified, the current one is displayed.\
+''')
 
   def do_load(self, line):
     "LOAD <filename>"
@@ -333,7 +350,7 @@ is present in the same directory, it is loaded too.\
 
   def do_loadmap(self, line):
     "LOADMAP <mapfilename>"
-    if len(line)==0:
+    if len(line) == 0:
       self.write('Expecting MAP file name\n')
       return
 
@@ -682,7 +699,7 @@ This command pushes the 16-bit 'word' parameter onto the stack.\
 LOAD     -- Load S19 file             | BF    -- Block fill memory
 LOADMAP  -- Load MAP file             | BULK  -- Erase EEPROM
 VERF     -- Verify memory/S19 file    | CYC   -- Print/clear cycle counter
-                                      | HELP  -- Get help on any command
+CD       -- Change directory          | HELP  -- Get help on any command
 ASM      -- Disassemble instructions  | MOVE  -- Move memory blocks
 BR       -- Set/clear breakpoints     | PRINT -- Evaluate expressions
 CALL     -- Call subroutine           | PSHB  -- Push a byte on the stack
@@ -776,5 +793,7 @@ if __name__ == "__main__":
           # Return a success flag
           return True
 
-  app = MyApp(0)     # Create an instance of the application class
-  app.MainLoop()     # Tell it to start processing events
+  cwd = os.getcwd() # Save working directory
+  app = MyApp(0)    # Create an instance of the application class
+  app.MainLoop()    # Tell it to start processing events
+  os.chdir(cwd)     # Restore working directory on exit

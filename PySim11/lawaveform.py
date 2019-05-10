@@ -21,7 +21,7 @@ class LAWaveform(wx.Window):
 
     self.data = None     # Contains object of class LAData
     self.label = None    # Contains object of class LALabel
-    self.stimfile = None # File name when an input, ignored when isinput==0
+    self.stimfile = None # File name when an input, ignored when isinput == 0
     self.portpin = None  # String indicating name (e.g., 'PA6', 'PC3')
     self.isinput = 0     # May be 1 without stimulus file
 
@@ -96,14 +96,14 @@ class LAWaveform(wx.Window):
         self.label.SetLabel(dlgdata['pin'])
         self.stimfile = dlgdata['filename']
         self.portpin = dlgdata['pin']
-        self.isinput = ((dlgdata['IO']== 'I') or ((dlgdata['IO'] == 'IO') and self.stimfile))
+        self.isinput = ((dlgdata['IO'] == 'I') or ((dlgdata['IO'] == 'IO') and self.stimfile))
       elif dlgdata['filename'] != self.stimfile:
         self.stimfile = dlgdata['filename']
-        self.isinput = ((dlgdata['IO']== 'I') or ((dlgdata['IO'] == 'IO') and self.stimfile))
+        self.isinput = ((dlgdata['IO'] == 'I') or ((dlgdata['IO'] == 'IO') and self.stimfile))
 
       if self.stimfile:
         newPath = os.path.dirname(self.stimfile)
-        if len(newPath)==0: newPath = lastPath
+        if len(newPath) == 0: newPath = lastPath
 
       return (1, newPath)
     return (0, None)

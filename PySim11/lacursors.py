@@ -80,7 +80,7 @@ class LACursors(wx.Window):
       x = int((self.pos1 - self.startTime)*dX + decorationDX)
       if 0 <= x <= w:
         dc.SetPen(wx.Pen(self.lineColor1, self.lineWidth, wx.SOLID))
-        if self.active==1: dc.SetBrush(wx.Brush(self.lineColor1, wx.SOLID))
+        if self.active == 1: dc.SetBrush(wx.Brush(self.lineColor1, wx.SOLID))
         else: dc.SetBrush(wx.Brush(self.lineColor1, wx.TRANSPARENT))
         dc.DrawPolygon([wx.Point(0,h), wx.Point(-4,h-4), wx.Point(-4,0), wx.Point(4,0), wx.Point(4,h-4)], xoffset=x)
 
@@ -88,7 +88,7 @@ class LACursors(wx.Window):
       x = int((self.pos2 - self.startTime)*dX + decorationDX)
       if 0 <= x <= w:
         dc.SetPen(wx.Pen(self.lineColor2, self.lineWidth, wx.SOLID))
-        if self.active==2: dc.SetBrush(wx.Brush(self.lineColor2, wx.SOLID))
+        if self.active == 2: dc.SetBrush(wx.Brush(self.lineColor2, wx.SOLID))
         else: dc.SetBrush(wx.Brush(self.lineColor2, wx.TRANSPARENT))
         dc.DrawPolygon([wx.Point(0,h), wx.Point(-4,h-4), wx.Point(-4,0), wx.Point(4,0), wx.Point(4,h-4)], xoffset=x)
 
