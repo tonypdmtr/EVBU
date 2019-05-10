@@ -15,18 +15,12 @@ Installation:
 
    Copy files under some directory (e.g., evbu)
 
-Running:
-
-   Unix:   vi misc/evbu      (edit pathnames)
-           misc/evbu         (put this on your path for future use)
-
-   Windows: Create desktop shortcut to evbu.py (whatever path you
-            placed it) and double-click on it.
+Main file to run: evbu.py
 
 Contact:
 
   Andrew Sterian
-  steriana@claymore.engineer.gvsu.edu
+  steriana@claymore.engineer.gvsu.edu ***NO LONGER VALID***
   http://claymore.engineer.gvsu.edu/~steriana
 
   Tony Papadimitriou <tonyp@acm.org>
