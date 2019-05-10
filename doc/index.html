@@ -1,0 +1,447 @@
+<HTML>
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Win">
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+  <META HTTP-EQUIV="Description" CONTENT="
+BEGIN PYTHON-PACKAGE-INFO 1.0
+Current-Version:        0.5
+Title:                  EVBU - An Open Source 68HC11 Simulator
+Home-page:              http://claymore.engineer.gvsu.edu/~steriana/Python
+Description:            Simulates a 68HC11 microcontroller environment
+Keywords:               68HC11 EVBU simulator
+Author:                 Andrew Sterian, mailto:steriana@gvsu.edu
+Maintained-by:          The author
+Primary-site:           http://claymore.engineer.gvsu.edu/~steriana/Python
+Alternate-site:         None
+Original-site:          Same as primary site
+Platform:               Unix/Windows
+Copying-policy:         Free software, see copyright info below for details
+Difficulty-rating:      Some installation required
+System-requirements:    None
+Software-requirements:  Python 2.1.1, wxWindows 2.3.2
+
+This package simulates the execution of a 68HC11 microcontroller
+as well as the BUFFALO monitor program that provides a command
+line interface to executing and debugging programs. Extra features
+include symbolic debugging and cycle counting. A graphical interface
+allows port pin stimulus and monitoring.
+
+END PYTHON-PACKAGE-INFO
+">
+  <TITLE>EVBU -- An Open Source 68HC11 Simulator</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" LINK="#0000c0" VLINK="#8f008f">
+
+<!-- -->
+
+<P><FONT SIZE="+2">EVBU - An Open Source 68HC11 Simulator</FONT></P>
+
+<BLOCKQUOTE>
+  <P><A HREF="http://claymore.engineer.gvsu.edu/~steriana"><FONT
+   SIZE="-1">Andrew Sterian</FONT></A><FONT SIZE="-1"><BR>
+  Padnos School of Engineering<BR>
+  Grand Valley State University</FONT></P>
+</BLOCKQUOTE>
+
+<P><HR ALIGN=LEFT><TABLE WIDTH="100%" BORDER="0" CELLSPACING="2"
+CELLPADDING="0">
+  <TR>
+    <TD>Top-Level | <A HREF="buffalo.html">BUFFALO Emulation</A> | <A HREF="periphs.html">Peripheral Emulation</A> |
+    <A HREF="waveform.html">Waveform I/O</A></TD>
+    <TD ALIGN="RIGHT"><FONT SIZE="-1">Version 0.5</FONT></TD>
+  </TR>
+  <TR>
+    <TD><!-- --></TD>
+    <TD ALIGN="RIGHT"><FONT SIZE="-1">March 10, 2002</FONT></TD>
+  </TR>
+  <TR>
+    <TD>
+    <FONT SIZE="-1"><A HREF="#Installation">Installation</A> | <A HREF="#Running">Running EVBU</A> | <A
+    HREF="#Limitations">Limitations</A> | <A HREF="#UsageNotes">Usage
+    Notes</A> | <A HREF="#Copyright">Copyright</A> | <A HREF="#Todo">To
+    Do</A> | <A HREF="#Credits">Credits</A> | <A HREF="#History">History</A></FONT></TD>
+    <TD><!-- --></TD>
+  </TR>
+</TABLE><HR ALIGN=LEFT></P>
+
+<H2>Introduction</H2>
+
+  <P>The Motorola 68HC11 is a popular microcontroller and several
+  evaluation boards are available (including Motorola's original board, known
+  as the EVBU) for exploring the
+  capabilities of this microcontroller. This software is
+  a 68HC11 simulator that emulates many aspects
+  of an EVBU with a 68HC11 running the <A HREF="buffalo.html">BUFFALO monitor program</A>.
+  The user interface to EVBU is similar (but not identical) to
+  what a user would experience using a terminal program connected
+  to the EVBU hardware. EVBU is free software licensed under the
+  terms of the <A HREF="gpl.html">GPL</A>.
+  <P>In addition to a command-line emulation of BUFFALO, the EVBU
+  software provides a <A HREF="waveform.html">logic-analyzer-like interface</A> to the 68HC11
+  port pins. This allows you to view output waveforms and to construct
+  and view input stimulus waveforms.
+  <P>The main goal of the EVBU software is to aid in the understanding
+  of the 68HC11 and of various concepts in digital systems. It is
+  <B><I>not</I></B> the goal of EVBU to be a fast, complete,
+  all-singing-all-dancing simulator (investigate THRSim11 or UMPS if you are
+  looking for one). Only <A HREF="periphs.html">some of the 68HC11
+  peripherals</A> are implemented. Thus, EVBU is intended mostly
+  as a teaching tool, although it is a fairly capable simulator. The
+  execution speed is on the order of 500X real time for an 8 MHz
+  68HC11. That is, it takes about 500 seconds to simulate 1 second
+  of real time (on a 1 GHz Pentium processor). Improving the speed of
+  the simulator is not a major goal of the project.
+
+  <P>EVBU is written in pure <A HREF="http://www.python.org">Python</A>
+  and uses the <A HREF="http://wxPython.org">wxPython</A> graphical
+  framework. It should run on any platform that supports the above
+  applications. EVBU was developed with Python 2.1.1 and wxPython
+  2.3.2. Earlier versions of Python and wxPython may work, but there
+  are no guarantees. Note that on Unix systems, wxPython currently
+  requires GTK, so make sure this package is installed. Also note that wxPython's version is closely tied
+  to the Python version, so if you need to upgrade your Python
+  installation, you will probably also need to upgrade wxPython.
+  <P>The EVBU program offers several enhancements over the actual
+  BUFFALO monitor:
+  <UL>
+    <UL>
+      <LI>Logic levels at output port pins can be displayed graphically,
+      and input port pins can be stimulated with user-constructed
+      waveforms.
+      <LI>Symbolic debugging is supported. Breakpoints can be set at
+      labels rather than addresses, tracing through instructions also
+      shows each source line, etc.
+      <LI>Tracing through instructions shows the next instruction to
+      be executed, not only the one that just executed.
+      <LI>Debugging commands not found in BUFFALO include executing
+      to the end of a subroutine and executing for a specified number
+      of cycles.
+      <LI>Numbers can be entered in hexadecimal, as in BUFFALO, but
+      also decimal, binary, and octal.
+      <LI>Cycle counting is implemented for timing algorithms or to
+      execute code for a certain number of cycles.
+    </UL>
+  </UL>
+  <P>You can download the latest version of EVBU from:
+  <P><CENTER><A HREF="http://claymore.engineer.gvsu.edu/~steriana/Python"><CODE>http://claymore.engineer.gvsu.edu/~steriana/Python</CODE></A></CENTER>
+  <P>Note that EVBU actually comes in two parts: PySim11, a Python
+  package that is the actual simulation engine, and EVBU, another
+  Python package that implements the interface to this engine.
+  Both packages work closely with each other and will simply be
+  referred to as &quot;EVBU&quot; in this document.
+
+<P><A NAME="Installation"></A></P>
+
+<H2>Installation</H2>
+
+<P>First, install <A HREF="http://www.python.org">Python 2.1.1</A>
+or later and <A HREF="http://wxPython.org">wxPython 2.3.2</A> or later. If
+you already have the above packages (but in older versions) try running
+EVBU and see what happens...you may not need to upgrade.
+<H3>Windows</H3>
+<P>Run the <TT>evbu0.5.exe</TT> installation program. I will assume
+you choose all of the default installation options. The installer
+will create and populate the following directories:</P>
+<UL>
+<PRE>
+c:\python21\evbu
+c:\python21\pysim11
+c:\python21\lib\evbu
+</PRE>
+</UL>
+<P>The above assumes you have Python installed in <TT>C:\Python21</TT>. The
+first two directories are where the simulator modules are located. The
+last directory contains the documentation, example files, etc. Also
+in this last directory is a sample batch file <TT>EVBU.BAT</TT> which shows
+you how to run the EVBU program.
+
+<H3>Unix</H3>
+<P>Extract the <TT>evbu0.5.tar.gz</TT> file then install as follows:</P>
+<UL>
+<PRE>
+python setup.py install
+</PRE>
+</UL>
+<P>The installer will create and populate the following directories:</P>
+<UL>
+<PRE>
+/usr/local/lib/python2.1/site-packages/evbu
+/usr/local/lib/python2.1/site-packages/PySim11
+/usr/local/lib/EVBU
+</PRE>
+</UL>
+<P>The above assumes your Python library directory is as indicated
+(it may be elsewhere but the installer should be able to find it,
+so don't worry about it). The first two directories are where the
+simulator modules are located. The last directory contains the
+documentation, example files, etc. Also in this last directory is
+a sample shell script <TT>evbu</TT> which shows you how to run
+the EVBU program.
+
+<P><A NAME="Running"></A></P>
+<H2>Running EVBU</H2>
+
+<H3>Windows</H3>
+<P>If Python has been registered as the official handler of .PY files, then you should
+be able to just create a desktop link to the <TT>evbu.py</TT> file, and clicking on
+the link will start EVBU. Right-click on the desktop, select &quot;New-->Shortcut...&quot;
+and Browse to find the <TT>evbu.py</TT> file. Give it a shot...it'll probably work.
+<P>Otherwise, you run EVBU by invoking the Python interpreter on the <TT>evbu.py</TT>
+file of the <TT>evbu</TT> package. For example:</P>
+<PRE><CENTER>c:\python21\python c:\python21\evbu\evbu.py</CENTER></PRE>
+<P>Pretty painful, huh? The idea is that you put the above in a
+batch file and place the batch file somewhere on your PATH. The <TT>EVBU.BAT</TT>
+file that comes with this software contains a line like the above
+(which you can customize to your own installation). Place the <TT>EVBU.BAT</TT>
+file somewhere on your path...<TT>C:\WINDOWS</TT> is probably a safe bet. Open
+a command window (a.k.a DOS box) and type <TT>"echo %PATH%"</TT> (no quotes) for more ideas
+of where to place this batch file.
+<H3>Unix</H3>
+<P>You run EVBU by invoking the Python interpreter on the <TT>evbu.py</TT>
+file of the <TT>evbu</TT> package. For example:</P>
+<PRE><CENTER>python /usr/local/lib/python2.1/site-packages/evbu/evbu.py</CENTER></PRE>
+<P>The <TT>evbu</TT> shell script that comes with this software contains an
+example for running EVBU, modelled on the above. Place this shell script on
+your path. I suggest <TT>/usr/local/bin</TT> if you have write permission,
+or <TT>$(HOME)/bin</TT> if you do not (and make sure <TT>$(HOME)/bin</TT> is
+on your path).
+
+<P><A NAME="Limitations"></A></P>
+<H2>Limitations</H2>
+
+  <P>The limitations of EVBU are partially intentional (to preserve
+  similarities with the spartan BUFFALO interface) and partially
+  due to the goals of the software. The current limitations are
+  listed below; ongoing development may chip away at them over
+  time.
+  <UL>
+    <LI>Only <A HREF="periphs.html">a subset of 68HC11 peripherals</A>
+    is supported. This includes
+    output compares, input capture, RTI, timer overflow,
+    and the pulse accumulator. Not supported are strobes and
+    handshakes, SCI, SPI, EEPROM, IRQ/XIRQ, and A/D.
+    <LI>All memory is readable and writable. There are no ROM or
+    EEPROM limitations.
+    <LI>The program simulates some of the <A HREF="buffalo.html#Routines">BUFFALO subroutine entry
+    points</A> such as OUTSTR, HEXBIN, etc. but not all of them.
+    <LI>The <A HREF="buffalo.html#Commands">command line interface of the EVBU program</A> was designed
+    to be similar to the BUFFALO interface on EVBU hardware, but
+    they are not identical. Several of the differences are considered
+    enhancements, while others are simply due to laziness. There
+    is, for example, no assembly of instructions supported by the
+    '<TT>ASM</TT>' command, just disassembly.
+  </UL>
+
+<P><A NAME="UsageNotes"></A></P>
+<H2>Usage Notes</H2>
+
+  <H3>Program Options</H3>
+  <P>The '<TT>-h</TT>' option prints a brief summary of available
+  options. The starting address can either be set manually using
+  the '<TT>RM</TT>' command, or via the S19 file using the '<TT>END</TT>'
+  directive, or via the '<TT>-s</TT>' EVBU option.
+  The '<TT>--use-swi</TT>' option allows your program to use <TT>SWI</TT>
+  for its own purposes and does not return control back to the
+  simulator. The '<TT>--no-buffalo</TT>' option does not install
+  the BUFFALO service subroutines and interrupt vectors. The '<TT>--no-timer</TT>'
+  and '<TT>--no-pio</TT>' options prevent the timer and parallel
+  I/O peripherals, respectively, from being included in the
+  simulation and speed up execution.</P>
+
+  <H3>Command Line Interface</H3>
+  <P>If you are familiar with the BUFFALO monitor, you should find
+  the interface of this software to be familiar. The best documentation
+  for the command line interface is obtained by typing '<TT>help
+  command</TT>' for the command of interest. Typing '<TT>help overview</TT>'
+  gives a list of commands. Some commands have the same name as
+  the BUFFALO counterparts but are slightly different. The <TT>LOAD</TT>
+  command, for example, is not '<TT>LOAD T</TT>' as in BUFFALO
+  but simply '<TT>LOAD FILENAME.S19</TT>' which loads an S19 file
+  directly into memory. More information is available in the
+  <A HREF="buffalo.html#Commands">BUFFALO Commands</A> section.
+  <P>New commands worthy of investigation are:
+  <UL>
+    <LI>S -- This command skips the current subroutine. That is,
+    it executes instructions up to the address most recently pushed
+    on the stack.
+    <LI>STOPWHEN -- This command executes instructions for a certain
+    number of cycles.
+    <LI>CYC -- Display or reset the instruction cycle counter
+    <LI>PRINT -- Display hexadecimal and decimal equivalents of integers
+    (such as binary) or symbols (if a MAP file is loaded)
+    <LI>TN/TY -- Like the trace command '<TT>T</TT>' but the next
+    instruction, if it is a branch, is unconditionally skipped ('<TT>TN</TT>')
+    or taken ('<TT>TY</TT>').
+    <LI>PSHB/PSHW -- This command pushes data on the stack to support
+    the testing of subroutines.
+  </UL>
+  <P>The trace command '<TT>T</TT>' displays the instruction that
+  just executed along with the register values after execution,
+  just like BUFFALO, but then also displays the next instruction
+  that will be executed. This may be confusing at first but I believe
+  it makes debugging much easier.
+  <P>The point behind the '<TT>TN</TT>' and '<TT>TY</TT>' commands
+  is to help test various paths through your program without a
+  lot of work. For example, if you have a '<TT>BRSET</TT>' instruction
+  testing the state of an external port pin, you can use '<TT>TY</TT>'
+  to simulate the effect of having the pin set and the branch taken.
+
+  <H3>Symbolic Debugging</H3>
+
+  <P>EVBU supports loading MAP files in the format generated by
+  the <TT>-MTA</TT> option (i.e., generate an ASCII map file) of
+  the <A HREF="http://www.aspisys.com/asm11.htm">ASM11</A> freeware
+  68HC11 assembler. When the '<TT>LOAD</TT>' command is issued,
+  the S19 file name has its extension replaced to <TT>.MAP</TT>
+  and the corresponding file is sought in the same directory. If
+  it exists, it is automatically loaded. The '<TT>LOADMAP</TT>'
+  command can also be used to load a specific MAP file.
+  <P>When a MAP file is loaded, the symbols in the file are available
+  as constants. For example, rather than setting a breakpoint by
+  using an absolute address, a symbol name can be used instead.
+  <B>NOTE</B>: Symbol names in EVBU are case-insensitive. Do not
+  enable the <TT>-C</TT> option of the ASM11 program to allow case-sensitive
+  labels.
+  <P>The MAP file also contains line number information from the
+  source file. When a MAP file is loaded, the '<TT>L</TT>' command
+  will display source code surrounding the line that represents
+  the current value of the program counter. Similarly, tracing
+  through instructions with the '<TT>T</TT>' command will display
+  source lines.
+
+  <H3>BUFFALO Subroutines</H3>
+  <P>Many of the <A HREF="buffalo.html#Routines">BUFFALO subroutine entry points</A> such as OUTSTR
+  and HEXBIN are supported using &quot;virtual functions.&quot;
+  This is a concept supported by PySim11 which traps execution
+  at certain addresses and rather than executing 68HC11 code invokes
+  a Python function instead, then issues a simulated <TT>RTS</TT>
+  instruction. For example, the following 68HC11 assembly code:</P>
+  <BLOCKQUOTE>
+    <BLOCKQUOTE>
+      <PRE>OUTSTR    EQU $FFC7
+          LDX #hello
+          JSR OUTSTR
+          SWI
+hello     FCC 'Hello!'
+          FCB 4,13</PRE>
+    </BLOCKQUOTE>
+  </BLOCKQUOTE>
+  <P>will print the string 'Hello!' just as it would under BUFFALO.
+  This support of BUFFALO also extends to the interrupt table.
+  A secondary interrupt table is created at $00C4 which contains
+  a list of <TT>JMP</TT> instructions to interrupt service routines,
+  as with the actual BUFFALO monitor.</P>
+
+<P><A NAME="Copyright"></A></P>
+<H2>Copyright &amp; License</H2>
+
+  <P>Copyright &COPY; 1999-2002 <A HREF="http://claymore.engineer.gvsu.edu/~steriana">Andrew Sterian</A>. All Rights Reserved.
+  mailto: <A HREF="mailto:steriana@claymore.engineer.gvsu.edu?subject=EVBU">steriana@claymore.engineer.gvsu.edu</A>
+  <P>Both EVBU and PySim11 come with ABSOLUTELY NO WARRANTY. This
+  is free software licensed under the terms of the <A HREF="gpl.html">GNU General
+  Public License</A>. You are welcome to redistribute this software
+  under certain conditions. For more details, see the previous link.
+
+<P><A NAME="Todo"></A></P>
+
+<H2>To Do</H2>
+
+  <OL>
+    <LI>Thorough testing.
+    <LI>Loading of symbols from GCC-generated code.
+    <LI>IRQ and XIRQ
+    <LI>A/D converter
+    <LI>Apply memory protections to the PySim11 engine to emulate
+    the 68HC11E9 and display 'rom' or raise an exception when non-RAM
+    is written to.
+    <LI>Allow entry of expressions rather than just constants
+    <LI>Better breakpoint handling: one-time-only breakpoints, breakpoints
+    with conditions and expressions, actually using the count field
+    of a breakpoint to stop only after some hits, automatic actions
+    on breakpoint hit, breakpoints on memory changes, etc.
+    <LI>Better documentation, tutorial, more examples.
+  </OL>
+
+<P><A NAME="Credits"></A></P>
+
+<H2>Credits</H2>
+
+  <P>This help file is based on a template for the help file for mxTools
+  by <A HREF="http://starship.python.net/crew/lemburg">M.A. Lemburg</A>.
+  This software was created with <A HREF="http://www.vim.org/">VIM</A>;
+  thanks to the authors of this program and special thanks for
+  the Python syntax support. Thanks to <A HREF="mailto:tonyp@acm.org">Tony
+  G. Papadimitriou</A> for his freeware <A HREF="http://www.aspisys.com/asm11.htm">ASM11</A>
+  assembler. Thanks to Mark Wicks for finding bugs and contributing
+  patches. Thanks to the <A HREF="http://wxPython.org">wxPython</A>
+  and <A HREF="http://www.wxwindows.org">wxWindows</A> authors
+  for great Open Source contributions, and, of course, to the
+  <A HREF="http://www.python.org">Python</A> developers and
+  support community.</P>
+
+<P><A NAME="History"></A></P>
+
+<H2>History</H2>
+
+  <P>Version 0.5 -- March 10, 2002
+  <UL>
+    <LI>Major changes to implement a graphical interface. The
+    main improvement is the logic analyzer display.
+    <LI>New peripherals: parallel I/O, input capture, pulse
+    accumulator (disabled using the new <TT>--no-pio</TT> option).
+    <LI>More documentation
+    <LI>Switched to Distutils distribution and installation
+    <LI>The <TT>--no-timer</TT> option didn't work.
+    <LI>Removed the <TT>-g</TT> option (it doesn't make as much
+    sense with a GUI).
+    <LI>The <TT>LSR</TT> instruction in extended mode did not work.
+   </UL>
+
+  <P>Version 0.4 -- June 15, 2000
+  <UL>
+    <LI>Added support for the timer and related peripherals (TOF,
+    RTIF, output compares, TCNT register). This can be disabled (for
+    faster program execution) using the new '<TT>--no-timer</TT>'
+    option from the command line.
+    <LI>Interrupts are now supported. Timer overflow, for example,
+    will generate an interrupt if the TOI bit is set.
+    <LI>On-chip registers are now supported (only for supported peripherals).
+    <LI>Fixed bugs that prevented branching or memory accesses across
+    the 16-bit address boundary.
+  </UL>
+  <P>Version 0.3 -- May 10, 2000
+  <UL>
+    <LI>Fixed implementation of ROL, ROR, DAA, FDIV instructions
+    <LI>H bit was incorrectly set after 8-bit addition instructions
+    <LI><TT>RM</TT> command caused an exception when trying to modify
+    the D register
+    <LI>Support for the BUFFALO service routines INCHAR and INPUT
+    on Unix systems was contributed by Mark Wicks (untested).
+  </UL>
+  <P>Version 0.2 -- February 29, 2000
+  <UL>
+    <LI>Added PSHB/PSHW commands
+    <LI>Interrupt vectors now point to BUFFALO pseudo-vectors rather
+    than being all zeros.
+    <LI>Error in BUFFALO HEXBIN service routine failed after internal
+    SHFTREG quantity exceeded 16 bits.
+    <LI>Added a big kluge to ignore the case when the INCHAR Buffalo
+    routine was called, the ENTER key was pressed, and this character
+    lingered to the time the raw_input() function was called in the
+    Cmd loop, thus causing the previous command to be reissued against
+    the user's will. For some reason, sys.stdin.flush() has no effect.
+    This kluge involved modifying the stock cmd.py a bit hence it
+    has been included in the EVBU distribution.
+  </UL>
+  <P>Version 0.1 -- December 30, 1999
+  <UL>
+    <LI>Initial release
+  </UL>
+
+<HR ALIGN=LEFT>
+
+<P><CENTER><FONT SIZE="-1">&COPY; 1999-2002, Copyright by <A HREF="http://claymore.engineer.gvsu.edu/~steriana">Andrew
+Sterian</A>; All Rights Reserved. mailto: <A HREF="mailto:steriana@claymore.engineer.gvsu.edu?subject=EVBU">steriana@claymore.engineer.gvsu.edu</A></FONT></CENTER>
+
+</BODY>
+</HTML>

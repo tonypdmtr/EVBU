@@ -1,0 +1,33 @@
+This is EVBU, an open source simulator for the 68HC11 microcontroller.
+The main documentation for this program is in docs/index.html.
+Quick start information is below for the impatient; more detailed
+installation and execution information is in docs/index.html.
+
+Quick Start
+===========
+
+Requirements:
+
+  - Python 3.7.3 or later
+  - wxPython 4.0.4 or later
+
+Installation:
+
+   Copy files under some directory (e.g., evbu)
+
+Running:
+
+   Unix:   vi misc/evbu      (edit pathnames)
+           misc/evbu         (put this on your path for future use)
+
+   Windows: Create desktop shortcut to evbu.py (whatever path you
+            placed it) and double-click on it.
+
+Contact:
+
+  Andrew Sterian
+  steriana@claymore.engineer.gvsu.edu
+  http://claymore.engineer.gvsu.edu/~steriana
+
+  Tony Papadimitriou <tonyp@acm.org>
+  Modified for Python 3 and wxPython Phoenix API

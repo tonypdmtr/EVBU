@@ -1,0 +1,260 @@
+<HTML>
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Win">
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+  <TITLE>EVBU -- Peripheral Emulation</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" LINK="#0000c0" VLINK="#8f008f">
+
+<!-- -->
+
+<P><FONT SIZE="+2">EVBU - An Open Source 68HC11 Simulator</FONT></P>
+
+<BLOCKQUOTE>
+  <P><A HREF="http://claymore.engineer.gvsu.edu/~steriana"><FONT
+   SIZE="-1">Andrew Sterian</FONT></A><FONT SIZE="-1"><BR>
+  Padnos School of Engineering<BR>
+  Grand Valley State University</FONT></P>
+</BLOCKQUOTE>
+
+<P><HR ALIGN=LEFT><TABLE WIDTH="100%" BORDER="0" CELLSPACING="2"
+CELLPADDING="0">
+  <TR>
+    <TD><A HREF="index.html">Top-Level</A> | <A HREF="buffalo.html">BUFFALO Emulation</A> | Peripheral Emulation |
+    <A HREF="waveform.html">Waveform I/O</A></TD>
+    <TD ALIGN="RIGHT"><FONT SIZE="-1">Version 0.5</FONT></TD>
+  </TR>
+  <TR>
+    <TD><!-- --></TD>
+    <TD ALIGN="RIGHT"><FONT SIZE="-1">March 10, 2002</FONT></TD>
+  </TR>
+  <TR>
+    <TD>
+    <FONT SIZE="-1"><A HREF="#Timer">Timer</A> | <A HREF="#OutputCompare">Output Compare</A> |
+    <A HREF="#InputCapture">Input Capture</A> | <A HREF="#PIO">Parallel I/O</A> |
+    <A HREF="#PulseAcc">Pulse Accumulator</A> | <A HREF="#Interrupts">Interrupts</A> | <A HREF="#Unsupported">Unsupported Peripherals</A> |
+    <A HREF="#Registers">Register Support</A></FONT></TD>
+    <TD><!-- --></TD>
+  </TR>
+</TABLE><HR ALIGN=LEFT></P>
+<H2>Introduction</H2>
+
+<P>Many of the 68HC11 peripherals are emulated in EVBU. While the emulation
+is fairly accurate, you should not consider EVBU to be a reference
+implementation of the 68HC11. If you try to do strange things, like
+use Port A pin 7 as a pulse accumulator input while programming the
+DDRA7 bit to make this pin an output, you get what you deserve! That is,
+EVBU may or may not behave like a real 68HC11. If you can suggest
+improvements for enhancing the accuracy of the emulation, however, I
+would be glad to hear from you.
+
+<P>The peripherals that are emulated are listed in the sections below,
+grouped by function. Some functions are implemented in the same
+Python module, however, so disabling a module (using the <TT>--no-timer</TT>
+or <TT>--no-pio</TT> command-line options) will disable several
+functions. There is no need to disable modules unless you really want
+to improve the speed of emulation a little bit. If you <I>really</I> want
+to speed up emulation, consider rewriting some of the core PySim11
+modules in C and send them to me :-)
+
+<A NAME="Timer"><!-- --></A>
+<H2>Timer</H2>
+<P>Most of the timer functions of the 68HC11 are emulated. This includes:</P>
+<UL>
+<LI>The <TT>TCNT</TT> register
+<LI>The prescaler
+<LI>Timer overflow flag (TOF) and interrupt (TOI)
+<LI>Real-time interrupt flag (RTIF) and interrupt (RTII)
+<LI>Real-time interrupt prescaler
+</UL>
+<P>The following aspects of the timer system are not yet implemented:</P>
+<UL>
+<LI>The COP watchdog
+<LI>Prescaler writes are not limited to the first 64 cycles of execution after
+reset
+<LI>Counter bypass in test mode (CBYP)
+</UL>
+<P>The timer system is disabled if the <TT>--no-timer</TT> command-line option
+is given.</P>
+<A NAME="OutputCompare"><!-- --></A>
+<H2>Output Compare</H2>
+<P>The output compare system is fully emulated. This includes:</P>
+<UL>
+<LI>TOC1 through TOC5 output compares
+<LI>Output compare flags (OCxF) and interrupts (OCxI)
+<LI>Control of port pins (TCTL1 register)
+<LI>OC1 control of OC2:OC5 pins (OC1M and OC1D registers)
+<LI>Output compare forcing (CFORC register)
+</UL>
+<P>The output compare system is disabled if the <TT>--no-timer</TT> command-line option
+is given. Control of port pins is disabled if the <TT>--no-pio</TT> command-line option
+is given.</P>
+
+<A NAME="InputCapture"><!-- --></A>
+<H2>Input Capture</H2>
+<P>The input capture system is fully emulated. This includes:</P>
+<UL>
+<LI>IC1 through IC4 input captures
+<LI>Input capture flags (ICxF) and interrupts (ICxI)
+<LI>Input capture times (TIC1 through TIC4 registers)
+<LI>Input capture edge configuration (TCTL2 register)
+</UL>
+<P>The input capture system is disabled if the <TT>--no-pio</TT> command-line option
+is given. Input capture timings (i.e., TICx registers) are disabled if the <TT>--no-timer</TT>
+command-line option is given.</P>
+
+<A NAME="PIO"><!-- --></A>
+<H2>Parallel I/O</H2>
+<P>Parallel I/O is implemented through the <A HREF="waveform.html">waveform I/O</A>
+graphical interface. Output pins are graphed in a window that mimics a logic
+analyzer. Input pins are stimulated using waveforms described by text files. These
+waveforms also appear in a waveform window.</P>
+
+<P>The parallel I/O emulation assumes the 68HC11 is operating in single-chip
+mode, so that Ports B and C are available for general-purpose use.</P>
+
+<P>The supported parallel I/O function include:</P>
+<UL>
+<LI>All Port A pins, including special functions for input capture and output compare,
+DDRA3/DDRA7 direction control, and the PORTA register
+<LI>All Port B pins
+<LI>All Port C pins, including direction control using DDRC
+<LI>All Port D pins (pins 0 through 5), including direction control using DDRD
+<LI>All Port E pins
+</UL>
+
+<P>Functions not yet supported are:</P>
+<UL>
+<LI>Strobed I/O and handshaking (PIOC and PORTCL)
+<LI>Open-collector Port C outputs (CWOM)
+<LI>Open-collector Port D outputs (DWOM)
+</UL>
+<P>The parallel I/O system is disabled if the <TT>--no-pio</TT> command-line
+option is given.</P>
+
+<A NAME="PulseAcc"><!-- --></A>
+<H2>Pulse Accumulator</H2>
+<P>The pulse accumulator system is fully emulated. This includes:</P>
+<UL>
+<LI>The PAI input pin on Port A pin 7
+<LI>The pulse accumulator counter (PACNT)
+<LI>Event counting and gated time accumulation modes (PAMOD)
+<LI>Events on rising or falling edges (PEDGE)
+<LI>Pulse accumulator input flag (PAIF) and interrupt (PAII)
+<LI>Pulse accumulator overflow flag (PAOVF) and interrupt (PAOVI)
+</UL>
+<P>The pulse accumulator system is disabled if the <TT>--no-pio</TT> command-line
+option is given. The timer module (disabled with <TT>--no-timer</TT>) maintains
+the PAIF and PAOVF flags, hence these may be enabled/disabled separately.
+
+<A NAME="Interrupts"><!-- --></A>
+<H2>Interrupts</H2>
+<P>Interrupts are emulated by EVBU. All of the supported peripherals
+that generate interrupts are capable of generating interrupt events
+if enabled by their local masks and by the I bit in the CCR. Interrupt
+emulation includes:</P>
+<UL>
+<LI>Interrupt vector locations in high memory (can be overwritten, even
+though BUFFALO ROM normally prevents writing to these locations)
+<LI>Secondary interrupt vector table in RAM beginning at 0x00C4 (to
+compensate for main interrupt vector table being in BUFFALO ROM)
+<LI>Interrupts enabled by TMSKx registers and I bit in CCR
+<LI>Register stacking and setting of I bit on interrupt
+<LI>Interrupt priority resolution, and promotion using the HPRIO register
+<LI>SWI generates an interrupt or returns control to BUFFALO (depending on the
+<TT>--use-swi</TT> command-line flag)
+</UL>
+<P>Interrupt system functions not yet supported are:</P>
+<UL>
+<LI>Illegal opcode interrupts
+<LI>IRQ and XIRQ
+<LI>WAI instruction
+<LI>STOP and TEST instructions
+<LI>Clock monitor fail
+<LI>Reset interrupt
+</UL>
+
+<A NAME="Unsupported"><!-- --></A>
+<H2>Unsupported Peripherals</H2>
+<P>The following 68HC11 peripherals are not yet emulated by EVBU:</P>
+<UL>
+<LI>The SCI peripheral
+<LI>The SPI peripheral
+<LI>The A/D peripheral
+<LI>On-chip EEPROM (this area behaves as RAM)
+<LI>On-chip ROM (this area behaves as RAM)
+<LI>Strobes and handshaking (STRA, STRB, PIOC, PORTCL)
+</UL>
+<P>For another view of supported and unsupported peripherals, see the
+next section which provides a register view of peripheral support.</P>
+
+<A NAME="Registers"><!-- --></A>
+<H2>Register Support</H2>
+<P>This section describes the peripherals emulated by EVBU from a register
+point of view. In the table below, registers fully emulated have no comments
+(i.e., have a blank table cell). Registers not supported or fully emulated
+indicate the bits that are/are not supported.</P>
+<TABLE ALIGN="CENTER" WIDTH="50%" BORDER="1" CELLSPACING="2" CELLPADDING="0">
+  <TR><TD ALIGN=CENTER><B>Register</B></TD><TD ALIGN=CENTER><B>Address</B></TD><TD ALIGN=CENTER><B>Comments</B></TD></TR>
+<TR><TD ALIGN=CENTER>PORTA</TD>  <TD ALIGN=CENTER>0x1000</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>PIOC</TD>   <TD ALIGN=CENTER>0x1002</TD><TD ALIGN=CENTER>Not supported</TD></TR>
+<TR><TD ALIGN=CENTER>PORTC</TD>  <TD ALIGN=CENTER>0x1003</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>PORTB</TD>  <TD ALIGN=CENTER>0x1004</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>PORTCL</TD> <TD ALIGN=CENTER>0x1005</TD><TD ALIGN=CENTER>Not supported</TD></TR>
+<TR><TD ALIGN=CENTER>DDRC</TD>   <TD ALIGN=CENTER>0x1007</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>PORTD</TD>  <TD ALIGN=CENTER>0x1008</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>DDRD</TD>   <TD ALIGN=CENTER>0x1009</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>PORTE</TD>  <TD ALIGN=CENTER>0x100A</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>CFORC</TD>  <TD ALIGN=CENTER>0x100B</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>OC1MC</TD>  <TD ALIGN=CENTER>0x100C</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>OC1MD</TD>  <TD ALIGN=CENTER>0x100D</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>TCNT</TD>   <TD ALIGN=CENTER>0x100E</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>TIC1</TD>   <TD ALIGN=CENTER>0x1010</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>TIC2</TD>   <TD ALIGN=CENTER>0x1012</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>TIC3</TD>   <TD ALIGN=CENTER>0x1014</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>TOC1</TD>   <TD ALIGN=CENTER>0x1016</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>TOC2</TD>   <TD ALIGN=CENTER>0x1018</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>TOC3</TD>   <TD ALIGN=CENTER>0x101A</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>TOC4</TD>   <TD ALIGN=CENTER>0x101C</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>TOC5/TIC4</TD><TD ALIGN=CENTER>0x101E</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>TCTL1</TD>  <TD ALIGN=CENTER>0x1020</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>TCTL2</TD>  <TD ALIGN=CENTER>0x1021</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>TMSK1</TD>  <TD ALIGN=CENTER>0x1022</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>TFLG1</TD>  <TD ALIGN=CENTER>0x1023</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>TMSK2</TD>  <TD ALIGN=CENTER>0x1024</TD><TD ALIGN=CENTER>Prescaler bits writable any time</TD></TR>
+<TR><TD ALIGN=CENTER>TFLG2</TD>  <TD ALIGN=CENTER>0x1025</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>PACTL</TD>  <TD ALIGN=CENTER>0x1026</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>PACNT</TD>  <TD ALIGN=CENTER>0x1027</TD><TD ALIGN=CENTER>&nbsp;</TD></TR>
+<TR><TD ALIGN=CENTER>SPCR</TD>   <TD ALIGN=CENTER>0x1028</TD><TD ALIGN=CENTER>Not supported</TD></TR>
+<TR><TD ALIGN=CENTER>SPSR</TD>   <TD ALIGN=CENTER>0x1029</TD><TD ALIGN=CENTER>Not supported</TD></TR>
+<TR><TD ALIGN=CENTER>SPDR</TD>   <TD ALIGN=CENTER>0x102A</TD><TD ALIGN=CENTER>Not supported</TD></TR>
+<TR><TD ALIGN=CENTER>BAUD</TD>   <TD ALIGN=CENTER>0x102B</TD><TD ALIGN=CENTER>Not supported</TD></TR>
+<TR><TD ALIGN=CENTER>SCCR1</TD>  <TD ALIGN=CENTER>0x102C</TD><TD ALIGN=CENTER>Not supported</TD></TR>
+<TR><TD ALIGN=CENTER>SCCR2</TD>  <TD ALIGN=CENTER>0x102D</TD><TD ALIGN=CENTER>Not supported</TD></TR>
+<TR><TD ALIGN=CENTER>SCSR</TD>   <TD ALIGN=CENTER>0x102E</TD><TD ALIGN=CENTER>Not supported</TD></TR>
+<TR><TD ALIGN=CENTER>SCDR</TD>   <TD ALIGN=CENTER>0x102F</TD><TD ALIGN=CENTER>Not supported</TD></TR>
+<TR><TD ALIGN=CENTER>ADCTL</TD>  <TD ALIGN=CENTER>0x1030</TD><TD ALIGN=CENTER>Not supported</TD></TR>
+<TR><TD ALIGN=CENTER>ADR1</TD>   <TD ALIGN=CENTER>0x1031</TD><TD ALIGN=CENTER>Not supported</TD></TR>
+<TR><TD ALIGN=CENTER>ADR2</TD>   <TD ALIGN=CENTER>0x1032</TD><TD ALIGN=CENTER>Not supported</TD></TR>
+<TR><TD ALIGN=CENTER>ADR3</TD>   <TD ALIGN=CENTER>0x1033</TD><TD ALIGN=CENTER>Not supported</TD></TR>
+<TR><TD ALIGN=CENTER>ADR4</TD>   <TD ALIGN=CENTER>0x1034</TD><TD ALIGN=CENTER>Not supported</TD></TR>
+<TR><TD ALIGN=CENTER>BPROT</TD>  <TD ALIGN=CENTER>0x1035</TD><TD ALIGN=CENTER>Not supported</TD></TR>
+<TR><TD ALIGN=CENTER>EPROG</TD>  <TD ALIGN=CENTER>0x1036</TD><TD ALIGN=CENTER>Not supported</TD></TR>
+<TR><TD ALIGN=CENTER>OPTION</TD> <TD ALIGN=CENTER>0x1039</TD><TD ALIGN=CENTER>Not supported</TD></TR>
+<TR><TD ALIGN=CENTER>COPRST</TD> <TD ALIGN=CENTER>0x103A</TD><TD ALIGN=CENTER>Not supported</TD></TR>
+<TR><TD ALIGN=CENTER>PPROG</TD>  <TD ALIGN=CENTER>0x103B</TD><TD ALIGN=CENTER>Not supported</TD></TR>
+<TR><TD ALIGN=CENTER>HPRIO</TD>  <TD ALIGN=CENTER>0x103C</TD><TD ALIGN=CENTER>RBOOT, SMOD, MDA, IRVNE not supported</TD></TR>
+<TR><TD ALIGN=CENTER>INIT</TD>   <TD ALIGN=CENTER>0x103D</TD><TD ALIGN=CENTER>RAM3-0 not supported</TD></TR>
+<TR><TD ALIGN=CENTER>TEST1</TD>  <TD ALIGN=CENTER>0x103E</TD><TD ALIGN=CENTER>Not supported</TD></TR>
+<TR><TD ALIGN=CENTER>CONFIG</TD> <TD ALIGN=CENTER>0x103F</TD><TD ALIGN=CENTER>Not supported</TD></TR>
+</TABLE>
+</TABLE>
+
+<HR ALIGN=LEFT>
+<P><I><A HREF="index.html">Back to the top-level documentation</A></I></P>
+
+<P><CENTER><FONT SIZE="-1">&COPY; 1999-2002, Copyright by <A HREF="http://claymore.engineer.gvsu.edu/~steriana">Andrew
+Sterian</A>; All Rights Reserved. mailto: <A HREF="mailto:steriana@claymore.engineer.gvsu.edu?subject=EVBU">steriana@claymore.engineer.gvsu.edu</A></FONT></CENTER>
+
+</BODY>
+</HTML>

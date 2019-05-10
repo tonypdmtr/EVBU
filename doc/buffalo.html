@@ -1,0 +1,240 @@
+<HTML>
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Win">
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+  <TITLE>EVBU -- BUFFALO Emulation</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" LINK="#0000c0" VLINK="#8f008f">
+
+<!-- -->
+
+<P><FONT SIZE="+2">EVBU - An Open Source 68HC11 Simulator</FONT></P>
+
+<BLOCKQUOTE>
+  <P><A HREF="http://claymore.engineer.gvsu.edu/~steriana"><FONT
+   SIZE="-1">Andrew Sterian</FONT></A><FONT SIZE="-1"><BR>
+  Padnos School of Engineering<BR>
+  Grand Valley State University</FONT></P>
+</BLOCKQUOTE>
+
+<P><HR ALIGN=LEFT><TABLE WIDTH="100%" BORDER="0" CELLSPACING="2"
+CELLPADDING="0">
+  <TR>
+    <TD><A HREF="index.html">Top-Level</A> | BUFFALO Emulation | <A HREF="periphs.html">Peripheral Emulation</A> |
+    <A HREF="waveform.html">Waveform I/O</A></TD>
+    <TD ALIGN="RIGHT"><FONT SIZE="-1">Version 0.5</FONT></TD>
+  </TR>
+  <TR>
+    <TD><!-- --></TD>
+    <TD ALIGN="RIGHT"><FONT SIZE="-1">March 10, 2002</FONT></TD>
+  </TR>
+  <TR>
+    <TD>
+    <FONT SIZE="-1"><A HREF="#Routines">Service Functions</A> | <A HREF="#Expressions">Expressions</A> | <A
+    HREF="#Commands">Commands</A></FONT></TD>
+    <TD><!-- --></TD>
+  </TR>
+</TABLE><HR ALIGN=LEFT></P>
+<H2>BUFFALO Emulation</H2>
+
+<P>Several aspects of the BUFFALO monitor are emulated by EVBU, while others
+are not. Specifically, the following components are emulated:
+<UL>
+<LI>The command line interface is emulated, with some differences.
+<LI>The two-level interrupt vector table is emulated. Thus, installing
+interrupt vectors on EVBU and on a ROM-based BUFFALO system is the
+same (i.e., they are installed in RAM beginning at 0x00C4 rather than
+at high memory).
+<LI>The BUFFALO service routines that do useful things (print
+characters, wait for keyboard input, etc.) are emulated, with some
+differences.
+<LI>The <TT>SWI</TT> instruction terminates the program and returns
+to the command line prompt rather than generating a true interrupt.
+</UL>
+
+<P>The following aspects of BUFFALO are <I><B>not</B></I> emulated
+by EVBU:
+<UL>
+<LI>There is no &quot;ROM&quot; in EVBU so the interrupt vectors
+at high memory can be overwritten, unlike a true ROM-based system.
+<LI>There is no copy of BUFFALO in memory. All of the service routines
+are emulated by Python code.
+<LI>The BUFFALO service routines execute in 0 cycles, as they are
+only emulated.
+</UL>
+
+<P>The sections below describe the BUFFALO emulation in greater detail.
+
+<A NAME="Routines"></A>
+<H2>Service Functions</H2>
+<P>The following service functions are emulated and behave very closely
+to their EVBU counterparts. Don't count on exact behavior, however.
+
+<DL>
+<DT><B>rprint</B> (0xFF82)</DT>
+<DD>This function prints a one-line summary of the 68HC11 registers,
+just as the BUFFALO <TT>RM</TT> command does.</DD>
+<P><!-- --></P>
+<DT><B>hexbin</B> (0xFF85)</DT>
+<DD>This function takes the ASCII value in register A and interprets
+it as a hexadecimal digit. Then, the 16-bit contents of memory
+locations 0x0096:0x0097 (known as SHFTREG) are shifted left by 4 bits and the hexadecimal
+digit interpretation of register A is stored in the lowest 4 bits.</DD>
+<P><!-- --></P>
+<DT><B>chgbyt</B> (0xFF8E)</DT>
+<DD>This function stores the contents of memory location 0x0097 (the LSB
+of SHFTREG) at the memory location whose address is in the X register.</DD>
+<P><!-- --></P>
+<DT><B>upcase</B> (0xFFA0)</DT>
+<DD>This function converts the ASCII character in register A to uppercase.</DD>
+<P><!-- --></P>
+<DT><B>wchek</B> (0xFFA3)</DT>
+<DD>This function sets the Z flag in the CCR if the ASCII character in
+register A is a blank space, comma, or tab character, otherwise the Z
+flag is set to 0.</DD>
+<P><!-- --></P>
+<DT><B>input</B> (0xFFAC)</DT>
+<DD>This function sets the A register to the ASCII code of a character typed at the keyboard,
+or 0 if no character was pressed. In the simulator, keys typed in at the command
+line are passed to this function immediately, without the need to press ENTER
+for each line (i.e., as you would expect).</DD>
+<P><!-- --></P>
+<DT><B>outlhl</B> (0xFFB2)</DT>
+<DD>This function prints the upper nibble (i.e., 4 bits) of register A
+as a single hexadecimal character.</DD>
+<P><!-- --></P>
+<DT><B>outrhl</B> (0xFFB5)</DT>
+<DD>This function prints the lower nibble (i.e., 4 bits) of register A
+as a single hexadecimal character.</DD>
+<P><!-- --></P>
+<DT><B>outa</B> (0xFFB8)</DT>
+<DD>This function prints the character whose ASCII code is in register
+A.</DD>
+<P><!-- --></P>
+<DT><B>out1by</B> (0xFFBB)</DT>
+<DD>This function prints the 8-bit value stored at the memory location in
+the X register as a two-character hexadecimal number. Then, the X register
+is incremented.</DD>
+<P><!-- --></P>
+<DT><B>out1bs</B> (0xFFBE)</DT>
+<DD>This function is the same as <TT>out1by</TT> (see above). A single
+space character is printed in addition (after the number).</DD>
+<P><!-- --></P>
+<DT><B>out2bs</B> (0xFFC1)</DT>
+<DD>This function is equivalent to calling <TT>out1by</TT> then
+<TT>out1bs</TT>. That is, a 16-bit value is printed followed by a space.</DD>
+<P><!-- --></P>
+<DT><B>outcrl</B> (0xFFC4)</DT>
+<DD>This function effects a carriage return.</DD>
+<P><!-- --></P>
+<DT><B>outstr</B> (0xFFC7)</DT>
+<DD>This function displays a carriage return, then calls <TT>outst0</TT> (see
+below).</DD>
+<P><!-- --></P>
+<DT><B>outst0</B> (0xFFCA)</DT>
+<DD>This function displays the ASCII string starting at the memory location
+stored in the X register. The string is terminated by the 8-bit value 0x04
+(which is not printed). A carriage return is printed following the
+string. Note that EVBU limits the length of the string to 300 characters,
+assuming that strings this long are probably the result of forgetting
+the 0x04 terminating character.</DD>
+<P><!-- --></P>
+<DT><B>inchar</B> (0xFFCD)</DT>
+<DD>This function is like <TT>input</TT> (see above) except that this
+function does not return until a character is typed. Like <TT>input</TT>,
+this character is stored (i.e., its ASCII code) in the A register.</DD>
+<P><!-- --></P>
+<DT><B>vecint</B> (0xFFD0)</DT>
+<DD>This function fills the secondary RAM-based interrupt vector table
+(which begins at 0x00C4) with the instruction &quot;<TT>JMP &gt;$E371</TT>&quot;
+except for interrupt vectors that have already been set to point to
+a different address. That is, if a <TT>JMP</TT> instruction is already
+found at one of the vector locations, the address is left alone.</DD>
+</DL>
+
+<A NAME="Expressions"></A>
+<H2>BUFFALO Expressions</H2>
+<P>Unlike BUFFALO, constants may be entered in a variety of bases
+using different prefix characters. Type <TT>'help overview'</TT> for
+a summary. The default number base continues to be hexadecimal. Also,
+when a symbol file (i.e., MAP file) is loaded, symbol names may be
+substituted for constants.
+
+<A NAME="Commands"></A>
+<H2>BUFFALO Commands</H2>
+<P>It is assumed that you are familiar with the BUFFALO command line. Below,
+the differences between BUFFALO commands and EVBU commands are described.
+<H3>ASM</H3>
+<P>This command disassembles instructions, but does not assemble them.
+<H3>BR</H3>
+This new command can set execution breakpoints. Read the help description
+for this command (i.e., <TT>help br</TT>) for an explanation.
+<H3>CYC</H3>
+This new command manages the EVBU cycle counter. The number of cycles
+executed is displayed by simply typing <TT>cyc</TT> by itself. The cycle
+count can be reset to 0 by typing <TT>cyc reset</TT>. Note that the latter
+also affects the parallel I/O peripheral by resetting its cycle count to 0.
+<H3>GO</H3>
+This command works as expected but also serves to set the parallel I/O
+peripheral cycle count to 0. This makes the <TT>GO</TT> command different
+from the other commands that begin execution (like <TT>P</TT> and <TT>STOPWHEN</TT>).
+<H3>L</H3>
+This new command displays the source code corresponding to the current value
+of the program counter, if a symbol file (i.e., MAP file) has been loaded.
+<H3>LOAD</H3>
+The <TT>LOAD</TT> command has a different syntax than BUFFALO. Rather than '<TT>LOAD T</TT>',
+the syntax is '<TT>LOAD filename.s19</TT>' where <TT>filename.s19</TT> is
+a valid S19 file.
+<H3>LOADMAP</H3>
+This new command manually loads a symbol file for the current program. Normally,
+a symbol file is sought automatically when the <TT>LOAD</TT> command is
+given.
+<H3>MM</H3>
+The <TT>MM</TT> command works as expected except for the interactive
+modification mode. After the current address and value are displayed,
+the new value to be written is typed at the input command line and
+the ENTER key must be pressed. This is different from the character-at-a-time
+mode of BUFFALO. Also, the extra control commands for going to previous
+bytes, etc. are not available. The interactive mode is exited by typing
+a single dot '.' character.
+<H3>PRINT</H3>
+This new command displays the value of an expression. It may be used for number
+conversion (for example, '<TT>PRINT %10110011</TT>' displays the hexadecimal
+and decimal interpretations of the binary number 10110011. This command may
+also be used to display the value of a symbol if a symbol file is loaded.
+<H3>PSHB</H3>
+This new command pushes a single 8-bit value on the stack. This command
+may be useful for calling subroutines that take parameters.
+<H3>PSHW</H3>
+This new command pushes a single 16-bit value on the stack.
+<H3>S</H3>
+This new command continues program execution in the same way as a <TT>P</TT>
+instruction, but a temporary breakpoint is inserted at the return address.
+Thus, this instruction stops when the current subroutine returns (i.e., up
+to the next <TT>RTS</TT> instruction).
+<H3>STOPAT</H3>
+This new command continues program execution but a temporary breakpoint
+is inserted at the given address.
+<H3>STOPWHEN</H3>
+This new command continues program execution but stops execution after
+a given number of cycles have been simulated.
+<H3>TN/TY</H3>
+These new commands simulate a single instruction, just like <TT>T</TT> except
+that branches can be forced-taken (<TT>TY</TT>) or forced-not-taken (<TT>TN</TT>).
+That is, if the next instruction to be executed is a branch instruction,
+the <TT>TN</TT> command will prevent the branch from being taken, regardless
+of whether the branch would normally be taken. Similarly, the <TT>TY</TT>
+command will cause the branch to be taken, even if normally it would not be.
+These commands apply to the normal branch instructions as well as to the
+<TT>BRSET/BRCLR</TT> instructions.
+<H3>VERF</H3>
+This new command verifies that the contents of the specified S19 file
+match the contents of memory.
+<HR ALIGN=LEFT>
+<P><I><A HREF="index.html">Back to the top-level documentation</A></I></P>
+
+<P><CENTER><FONT SIZE="-1">&COPY; 1999-2002, Copyright by <A HREF="http://claymore.engineer.gvsu.edu/~steriana">Andrew
+Sterian</A>; All Rights Reserved. mailto: <A HREF="mailto:steriana@claymore.engineer.gvsu.edu?subject=EVBU">steriana@claymore.engineer.gvsu.edu</A></FONT></CENTER>
+
+</BODY>
+</HTML>

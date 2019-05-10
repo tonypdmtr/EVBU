@@ -1,0 +1,27 @@
+Metadata-Version: 1.0
+Name: evbu
+Version: 0.5
+Summary: Simulator for the 68HC11 microcontroller
+Home-page: http://claymore.engineer.gvsu.edu/~steriana/Python
+           (LINK NO LONGER VALID)
+Author: Andrew Sterian
+Author-email: steriana@claymore.engineer.gvsu.edu
+              (EMAIL NO LONGER VALID)
+License: GPL
+Description:
+        EVBU is a simulator for the 68HC11 microcontroller. It also emulates
+        the BUFFALO interface, as is found on the Motorola 68HC11 EVBU and
+        other similar hardware systems.
+
+        Logic levels on I/O port pins are displayed graphically.
+
+        To run the program, invoke the Python interpreter on the evbu.py file.
+        On Windows, create a desktop shortcut to the file evbu/evbu.py
+
+        For Windows, you can directly type the Python script name if you first
+        do the following from an Administrator Console:
+
+        assoc .py=Python.File
+        python.file="C:\Windows\py.exe" "%L" %*
+
+Platform: UNKNOWN

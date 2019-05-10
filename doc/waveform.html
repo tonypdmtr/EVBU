@@ -1,0 +1,242 @@
+<HTML>
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Win">
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+  <TITLE>EVBU -- Waveform I/O</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" LINK="#0000c0" VLINK="#8f008f">
+
+<!-- -->
+
+<P><FONT SIZE="+2">EVBU - An Open Source 68HC11 Simulator</FONT></P>
+
+<BLOCKQUOTE>
+  <P><A HREF="http://claymore.engineer.gvsu.edu/~steriana"><FONT
+   SIZE="-1">Andrew Sterian</FONT></A><FONT SIZE="-1"><BR>
+  Padnos School of Engineering<BR>
+  Grand Valley State University</FONT></P>
+</BLOCKQUOTE>
+
+<HR ALIGN=LEFT><TABLE WIDTH="100%" BORDER="0" CELLSPACING="2"
+CELLPADDING="0">
+  <TR>
+    <TD><A HREF="index.html">Top-Level</A> | <A HREF="buffalo.html">BUFFALO Emulation</A> | <A HREF="periphs.html">Peripheral Emulation</A> | Waveform I/O</TD>
+    <TD ALIGN="RIGHT"><FONT SIZE="-1">Version 0.5</FONT></TD>
+  </TR>
+  <TR>
+    <TD><!-- --></TD>
+    <TD ALIGN="RIGHT"><FONT SIZE="-1">March 10, 2002</FONT></TD>
+  </TR>
+  <TR>
+    <TD>
+    <FONT SIZE="-1"><A HREF="#Display">Display Panel</A> | <A HREF="#Outputs">Output Waveforms</A> |
+    <A HREF="#Inputs">Input Waveforms</A> | <A HREF="#Simulation">Simulation Details</A> | <A HREF="#Cursors">Cursors</A></FONT></TD>
+    <TD><!-- --></TD>
+  </TR>
+</TABLE>
+<HR ALIGN=LEFT>
+
+<P>The port pins of the 68HC11 interact with the user via the waveform I/O panel. On
+this panel, an interface similar to that of a logic analyzer is presented. Each
+port pin uses a horizontal window to display its logic level as a function of time.
+For output pins, every change in logic level generates a rising or falling edge in
+the window, at the right time (measured in cycles). For input pins, a separate text
+file is constructed by the user and loaded into the waveform I/O panel, where it is
+displayed just like an output waveform. During simulation, this input file provides
+a logic level stimulus to the input port pin, once again with times measured in
+cycles.
+
+<A NAME="Display"><!-- --></A>
+<H2>The Display Panel</H2>
+<P>When the parallel I/O peripheral module is loaded (unless <TT>--no-pio</TT>
+is specified as a command-line option) a waveform I/O display panel is
+presented along with the main BUFFALO command window. If the display panel
+fails to display, it probably means that wxPython is not correctly installed,
+wxWindows is not correctly installed, or something similar. Check the displayed
+error messages for clues.
+
+<P>If this is your first time using the waveform I/O panel, I suggest creating
+a new waveform so you can investigate the options as you are reading this
+text. Select the <TT>Waveform-&gt;Add Waveform...</TT> menu, click on PA0 at
+the top of the Port Pin list box, then click the Browse button near the
+bottom right. Find the <TT>EXAMPLE.STI</TT> file that came with the EVBU
+software. Click OK to dismiss the dialog. You should see a new waveform
+in the display panel labelled PA0.
+
+<P>Each waveform is split into two windows, the label window on the left and
+the data window on the right. In the data window, the logic level of the port
+pin is shown as a function of time (in cycles). The yellow tick marks in the
+data window represent <B><I>divisions</I></B>. The number of cycles in one
+division is given by the <B><I>Scale</I></B> value near the top of the panel.
+Try adjusting the Scale text box to 1000 and see how the waveform changes
+in appearance. The yellow tick marks don't change in spacing or position,
+but the waveform expands and compresses.
+
+<P>The spacing of the tick marks can be changed using the <B><I>Zoom</I></B>
+value of the panel. The Zoom text box changes the number of pixels between
+each tick mark. The combination of Zoom and Scale serve to set (indirectly)
+the number of pixels per cycle, although this quantity is not manipulated
+directly. Try clicking on the Zoom In, Zoom Out, and Zoom All buttons.
+The latter is useful for viewing your whole waveform.
+<P>Note that the Zoom buttons do not affect the Scale. You may need to
+modify both Scale and Zoom to get a satisfactory view of your waveform.
+
+<P>The <B><I>Start Time</I></B> is used to shift the waveform to the
+left or right. The Start Time can be modified in three ways: by setting
+a value (in cycles) directly in the text box, by clicking the +Div or
+-Div buttons, which shift the waveform by one division, or by clicking
+on the Zero button which returns the start time to 0. Note that
+the Shift-Right and Shift-Left key combinations can also be used
+instead of the +Div and -Div buttons. Similarly, Ctrl-Z zeros the
+start time.
+
+<P>Note that the View menu duplicates many of the button interfaces
+on the panel.
+
+<P>Once a waveform is displayed, right-clicking somewhere in the
+waveform displays a pop-up menu where many useful actions can be
+performed. The waveform can be deleted, edited (the dialog is brought
+up again where the port pin and stimulus file, if applicable, can
+be changed), and other functions (described below).
+
+<P>Double clicking (with the left button) on a waveform automatically
+brings up the edit dialog.
+
+<A NAME="Outputs"><!-- --></A>
+<H2>Output Waveforms</H2>
+<P>While reading this section, you may find it useful to create a Port A
+pin 6 waveform (PA6) and to load the <TT>EX1.S19</TT> file for simulation.
+
+<P>Output waveforms are displayed with a black background in the display
+panel. When an output-only pin is selected in the Add Waveform... dialog,
+the Stimulus File box in this dialog is disabled to indicate that stimulus
+only applies to input pins.
+
+<P>Port pins that are bidirectional will have the Stimulus File text box
+enabled. Note the following:</P>
+<UL>
+<LI>A bidirectional pin with the Stimulus File text box left empty will
+be considered an output pin.
+<LI>A bidirectional pin with the Stimulus File text box non-empty will
+be considered an input pin.
+</UL>
+<P>Currently, there is no way to reverse a pin's direction in the middle
+of simulation. It is possible, however, to instantiate two separate
+waveforms of the same port pin, one as input and one as output (assuming
+the pin is bidirectional).
+
+<P>As an illustration, create the PA6 waveform, as suggested above,
+and load the <TT>EX1.S19</TT> file using the <TT>LOAD</TT> BUFFALO
+command. Then, type <TT>GO 1040</TT> to begin simulation. Once
+simulation completes, switch to the waveform I/O panel and press
+the Zoom All button. You should see three edges generated on PA6,
+approximately 2000 cycles apart (setting the Scale to 1000 makes this
+easier to see). Study the <TT>EX1.C</TT> file to see how the source
+corresponds to the observed output.
+
+<A NAME="Inputs"><!-- --></A>
+<H2>Input Waveforms</H2>
+
+<P>While reading this section, you may find it useful to create a Port A
+pin 0 waveform (PA0) and to load the <TT>EX2.S19</TT> file for simulation.
+For PA0, set the stimulus file to <TT>EX2.STI</TT> from the EVBU
+source distribution.
+
+<P>Input waveforms are displayed with a grey background in the
+display panel. When an input or bidirectional pin is selected
+in the Add Waveform... dialog, the Stimulus File box in this dialog
+is enabled to allow you to specify a stimulus file that defines the
+waveform. As mentioned in the previous section, if the Stimulus File
+text box is left blank for a bidirectional pin, the pin is assumed
+to be an output, otherwise it is assumed to be an input.
+
+<P>The format of a stimulus file is simple: it is a plain text file
+with two columns. The first column is the cycle number, the second
+is the value of the waveform at that cycle time. For example:</P>
+<PRE>
+0 0
+100 1
+900 0
+1000 1
+</PRE>
+<P>This stimulus file begins the waveform with 0, then a rising edge
+occurs at cycle 100, a falling edge at cycle 900, and a final
+rising edge at cycle 1000.
+
+<P>Blank lines and lines beginning with '#' (comment lines) are ignored.
+The cycle times must be written in strictly ascending order. Cycle times
+must be written in base 10.
+
+<P>Examine the <TT>EX2.STI</TT> file and use it as stimulus for
+Port A pin 0 (PA0) before you run the <TT>EX2.S19</TT> example
+file (see <TT>EX2.C</TT> for the source code). This example should
+clarify the above concepts.
+
+<P>Once the stimulus file is loaded, further changes to the file are
+<B><I>not</I></B> automatically reflected in the stimulus waveform. To effect
+a change, the waveform must be <B><I>reloaded</I></B> from the
+source file. This can be accomplished by right-clicking on the waveform
+and selecting Reload Stimulus from the pop-up menu.
+
+<A NAME="Simulation"><!-- --></A>
+<H2>Simulation Details</H2>
+<P>The waveform I/O display is tied to the cycle counter of the simulator.
+Note that this is not the same as the TCNT timer counter register. The
+simulator maintains its own cycle count that does not roll over beyond
+0xFFFF as it has many more bits of precision (in fact, it is a Python
+'long' type hence has a really really large number of bits). Note that
+the <TT>CYC</TT> BUFFALO command manipulates the simulator's cycle
+count, hence the waveform I/O cycle count is also affected.
+
+<P>In practice, it is expected that programs are started with the <TT>GO</TT>
+command. This serves to automatically reset the cycle counter to 0. For
+waveform I/O, this means that input stimulus files are applied starting
+at a cycle number of 0, and that output waveforms are cleared (i.e., all
+previous output activity is discarded).
+
+<P>All of the other methods of resuming program execution (e.g., the <TT>P</TT>
+command, the <TT>STOPAT</TT> command, etc.) do not reset the cycle counter
+and simply cause waveform I/O to continue where the last cycle count left off.
+
+<A NAME="Cursors"><!-- --></A>
+<H2>Cursors</H2>
+<P>The waveform display supports two cursors (or markers, as they are sometimes
+called) that can help locate events and measure the relative times of two
+events. A cursor is simply a vertical line that appears on all waveform
+windows and whose location (in time, measured in cycles) appears at the top
+right of the panel window. The difference in time between the two cursors
+is displayed in the C2-C1 box.
+
+<P>By default, the cursors are not displayed. Both cursor 1 and cursor 2 may
+be displayed manually from the View menu (or by the shorcut keys Ctrl-1 and
+Ctrl-2) or by right-clicking on a waveform and selecting one of the items
+from the pop-up menu.
+
+<P>The <TT>EX1.S19</TT> example from above may be helpful at this point.
+Create a PA6 waveform and run <TT>EX1.S19</TT> from address 0x1040. Click
+the Zoom All button to see the whole waveform. Just prior to the first rising
+edge, right-click on the waveform and select Cursor 1 Here. You will see
+a red cursor appear where you clicked. You will see the time location of
+cursor 1 in the C1 text box at the top right.
+
+<P>The cursors may be moved manually by left-clicking and dragging the
+top of the cursor (i.e., the pointer-shaped thingy).
+
+<P>Right-click again on the waveform (anywhere) and select Cursor 2 Here.
+A cyan cursor should appear, and you should see the difference in time
+between the two cursors in the C2-C1 box.
+
+<P>Another interesting way of positioning the cursors is by &quot;snapping&quot;
+them to an edge. Right-click again just prior to the first rising edge
+and select Cursor 1 to Next Edge. Cursor 1 will automatically move to the
+exact cycle of the next rising (or falling) edge of the waveform. Repeat
+this step for cursor 2 just prior to the subsequent falling edge. You
+will see that the duration of the pulse is (C2-C1) 2043 cycles.
+<HR ALIGN=LEFT>
+<P><I><A HREF="index.html">Back to the top-level documentation</A></I></P>
+
+<P><CENTER><FONT SIZE="-1">&COPY; 1999-2002, Copyright by <A HREF="http://claymore.engineer.gvsu.edu/~steriana">Andrew
+Sterian</A>; All Rights Reserved. mailto: <A HREF="mailto:steriana@claymore.engineer.gvsu.edu?subject=EVBU">steriana@claymore.engineer.gvsu.edu</A></FONT></CENTER>
+
+</BODY>
+</HTML>
