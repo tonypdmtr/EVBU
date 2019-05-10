@@ -144,9 +144,9 @@ class Term(wx.Window):
     if self.cbreak:
       if 0 < keycode < 256: self.queue.put(chr(keycode))
     else:
-      if keycode == 315: self.input.SetValue(self.history.recall_up())          # Up-arrow (Win7)
-      elif keycode == 317: self.input.SetValue(self.history.recall_down())      # Down-arrow (Win7)
-      elif keycode == 27: self.input.Clear()                                    # Escape
+      if keycode == wx.WXK_UP: self.input.SetValue(self.history.recall_up())
+      elif keycode == wx.WXK_DOWN: self.input.SetValue(self.history.recall_down())
+      elif keycode == wx.WXK_ESCAPE: self.input.Clear()
 
   def OnInput(self, event):
     if self.cbreak:
