@@ -15,7 +15,8 @@ s19re = re.compile(s19pat)
 
 def add_extension(filename):
   try: filename, ext = filename.rsplit('.',1)
-  except: ext = 's19'
+  except: pass
+  ext = 's19'
   return filename + '.' + ext
 
 def ReadS19(Filename, Memory): return S19reader(Filename, Memory, 0)

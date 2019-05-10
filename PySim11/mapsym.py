@@ -93,7 +93,8 @@ class MapFile(SafeStruct):
 
 def add_extension(filename):
   try: filename, ext = filename.rsplit('.',1)
-  except: ext = 'map'
+  except: pass
+  ext = 'map'
   return filename + '.' + ext
 
 def LoadMapFile(filename, simstate):
