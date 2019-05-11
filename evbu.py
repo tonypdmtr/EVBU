@@ -387,7 +387,7 @@ to load an alternate MAP file.
       return
     addr1 = addr1 or self.lastMDaddr
     addr2 = addr2 or min(addr1 + 255, 0xFFFF)
-    self.lastMDaddr = (addr2+1) & 0xFFFF
+    self.lastMDaddr = addr2+1 & 0xFFFF
     self.simstate.ucMemory.display8(addr1, addr2, self.write)
 
   def help_md(self): self.write('''\
@@ -567,7 +567,7 @@ executed.
       self.write("This command takes no parameters\n")
       return
 
-    SPval = (self.simstate.ucState.SP + 1) & 0xFFFF
+    SPval = self.simstate.ucState.SP + 1 & 0xFFFF
     retaddr = self.simstate.ucMemory.readUns16(SPval)
 
     br = PySim11.ucBreakpoint()

@@ -535,11 +535,11 @@ def ABA(simstate):
   simstate.ucState.setHNZVC(flags)
 
 def ABX(simstate):
-  X = (simstate.ucState.X + simstate.ucState.B) & 0xFFFF
+  X = simstate.ucState.X + simstate.ucState.B & 0xFFFF
   simstate.ucState.setX(X)
 
 def ABY(simstate):
-  Y = (simstate.ucState.Y + simstate.ucState.B) & 0xFFFF
+  Y = simstate.ucState.Y + simstate.ucState.B & 0xFFFF
   simstate.ucState.setY(Y)
 
 def ADCA(simstate, addr, value):
@@ -629,7 +629,7 @@ def ASRB(simstate):
   simstate.ucState.setNZVC(flags)
 
 def BCLR(simstate, addr, mask):
-  M = (simstate.ucMemory.readUns8(addr) & ~mask) & 0xFF
+  M = simstate.ucMemory.readUns8(addr) & ~mask & 0xFF
   flags = testNZ8(M)
   simstate.ucMemory.writeUns8(addr, M)
   simstate.ucState.setNZV(flags)
@@ -692,12 +692,12 @@ def BPL(simstate, addr):
 def BRA(simstate, addr): branchIf(simstate, 1, addr)
 
 def BRCLR(simstate, addr, mask, newpc):
-  branchIf(simstate, not (simstate.ucMemory.readUns8(addr) & mask), newpc)
+  branchIf(simstate, not simstate.ucMemory.readUns8(addr) & mask, newpc)
 
 def BRN(simstate, addr): branchIf(simstate, 0, addr)
 
 def BRSET(simstate, addr, mask, newpc):
-  branchIf(simstate, not ((~simstate.ucMemory.readUns8(addr)) & mask), newpc)
+  branchIf(simstate, not ~simstate.ucMemory.readUns8(addr) & mask, newpc)
 
 def BSET(simstate, addr, mask):
   M = (simstate.ucMemory.readUns8(addr) | mask) & 0xFF
@@ -752,17 +752,17 @@ def CMPB(simstate, addr, value):
   simstate.ucState.setNZVC(flags)
 
 def COM(simstate, addr, value):
-  M = (~simstate.ucMemory.readUns8(addr)) & 0xFF
+  M = ~simstate.ucMemory.readUns8(addr) & 0xFF
   flags = testNZ8(M)
   simstate.ucMemory.writeUns8(addr, M)
   simstate.ucState.setNZVC(flags | CC_C)
 
 def COMA(simstate):
-  simstate.ucState.setA((~simstate.ucState.A) & 0xFF)
+  simstate.ucState.setA(~simstate.ucState.A & 0xFF)
   simstate.ucState.setNZVC(testNZ8(simstate.ucState.A) | CC_C)
 
 def COMB(simstate):
-  simstate.ucState.setB((~simstate.ucState.B) & 0xFF)
+  simstate.ucState.setB(~simstate.ucState.B & 0xFF)
   simstate.ucState.setNZVC(testNZ8(simstate.ucState.B) | CC_C)
 
 def CPD(simstate, addr, value):
@@ -802,18 +802,18 @@ def DECB(simstate):
   simstate.ucState.setNZV(flags)
 
 def DES(simstate):
-  S = (simstate.ucState.SP - 1) & 0xFFFF
+  S = simstate.ucState.SP - 1 & 0xFFFF
   simstate.ucState.setSP(S)
 
 def DEX(simstate):
-  X = (simstate.ucState.X - 1) & 0xFFFF
+  X = simstate.ucState.X - 1 & 0xFFFF
   flags = 0
   if not X: flags |= CC_Z
   simstate.ucState.setX(X)
   simstate.ucState.setZ(flags)
 
 def DEY(simstate):
-  Y = (simstate.ucState.Y - 1) & 0xFFFF
+  Y = simstate.ucState.Y - 1 & 0xFFFF
   flags = 0
   if not Y: flags |= CC_Z
   simstate.ucState.setY(Y)
@@ -851,18 +851,18 @@ def INCB(simstate):
   simstate.ucState.setNZV(flags)
 
 def INS(simstate):
-  S = (simstate.ucState.SP + 1) & 0xFFFF
+  S = simstate.ucState.SP + 1 & 0xFFFF
   simstate.ucState.setSP(S)
 
 def INX(simstate):
-  X = (simstate.ucState.X + 1) & 0xFFFF
+  X = simstate.ucState.X + 1 & 0xFFFF
   flags = 0
   if not X: flags |= CC_Z
   simstate.ucState.setX(X)
   simstate.ucState.setZ(flags)
 
 def INY(simstate):
-  Y = (simstate.ucState.Y + 1) & 0xFFFF
+  Y = simstate.ucState.Y + 1 & 0xFFFF
   flags = 0
   if not Y: flags |= CC_Z
   simstate.ucState.setY(Y)
@@ -1170,10 +1170,10 @@ def TSTB(simstate):
   flags = testNZ8(simstate.ucState.B)
   simstate.ucState.setNZVC(flags)
 
-def TSX(simstate): simstate.ucState.setX((simstate.ucState.SP+1) & 0xFFFF)
-def TSY(simstate): simstate.ucState.setY((simstate.ucState.SP+1) & 0xFFFF)
-def TXS(simstate): simstate.ucState.setSP((simstate.ucState.X-1) & 0xFFFF)
-def TYS(simstate): simstate.ucState.setSP((simstate.ucState.Y-1) & 0xFFFF)
+def TSX(simstate): simstate.ucState.setX(simstate.ucState.SP+1 & 0xFFFF)
+def TSY(simstate): simstate.ucState.setY(simstate.ucState.SP+1 & 0xFFFF)
+def TXS(simstate): simstate.ucState.setSP(simstate.ucState.X-1 & 0xFFFF)
+def TYS(simstate): simstate.ucState.setSP(simstate.ucState.Y-1 & 0xFFFF)
 
 def WAI(simstate):
   simstate.ucState.push16(simstate.ucMemory, simstate.ucState.PC)
@@ -1229,7 +1229,7 @@ def DAA(simstate):
     offset = 0x66
     cout = 1
 
-  simstate.ucState.setA((simstate.ucState.A + offset) & 0xFF)
+  simstate.ucState.setA(simstate.ucState.A + offset & 0xFF)
   simstate.ucState.setNZVC(testNZ8(simstate.ucState.A) | cout * CC_C)
 
 def MUL(simstate):

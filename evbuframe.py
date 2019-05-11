@@ -192,7 +192,6 @@ class EVBUFrame(wx.Frame):
     self.Destroy()
 
   def OnCloseWindow(self, event): self.Quit()
-
   def OnPreferences(self, event): pass
 
   def OnFileLoad(self, event):

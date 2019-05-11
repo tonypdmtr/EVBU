@@ -307,10 +307,10 @@ class ucMemory(SafeStruct):
       if ix == 16:
         write('| ')
         self.displayAscii(initix, beginAddr, addrLow, write)
-        initix=0
+        initix = 0
 
         write('\n')
-        ix=0
+        ix = 0
         beginAddr = addrLow
 
         if addrLow <= addrHigh: write('%04X: ' % addrLow)

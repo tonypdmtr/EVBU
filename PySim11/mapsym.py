@@ -118,8 +118,7 @@ if __name__ == "__main__":
     print('mapsym Filename.MAP')
     sys.exit(0)
 
-  with open(sys.argv[1], 'rt') as fid: mf = MapFile(fid)
-  fid.close()
+  with open(sys.argv[1], 'rt') as fid: mf = MapFile(fid); fid.close()
 
   addr = mf.addrmap.keys()
   addr = sorted(addr)

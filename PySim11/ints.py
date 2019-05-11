@@ -88,4 +88,4 @@ class ucInterrupts(SafeStruct):
 
   def signal(self, sig):
     assert 1 <= sig <= 16
-    self.intdict[sig]=1
+    self.intdict[sig] = 1

@@ -129,11 +129,8 @@ class LAWaveform(wx.Window):
     self.data.AppendRel(DT, V, autoRefresh)
 
   def SetLineColor(self, C): self.data.SetLineColor(C)
-
   def SetLabelColor(self, C): self.label.SetTextColor(C)
-
   def SetDataBackground(self, C): self.data.SetBackgroundColor(C)
-
   def SetLabelBackground(self, C): self.label.SetBackgroundColor(C)
 
   def OnLeftDoubleClick(self, event, subobject=None):

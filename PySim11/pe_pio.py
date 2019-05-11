@@ -168,13 +168,12 @@ class PIO(SafeStruct):
     if self.pactl_cache & PAEN:
       if self.pactl_cache & (PAMOD|DDRA7) == PAMOD:   # Gated time accumulation mode
         # Check for count inhibited
-        if (   ((self.pactl_cache & PEDGE == PEDGE) and (self.PAI & PA == 0)) \
-            or ((self.pactl_cache & PEDGE == 0)     and (self.PAI & PA == PA))
-           ):
+        if self.pactl_cache & PEDGE == PEDGE and self.PAI & PA == 0 or \
+           self.pactl_cache & PEDGE == 0     and self.PAI & PA == PA:
           self.pa_counter += cycles
           if self.pa_counter >= 64:
             self.pa_counter -= 64
-            self.pacnt = self.pacnt+1
+            self.pacnt += 1
             # Note: No PAIF event in gated mode
             if self.pacnt == 256:
               self.pacnt = 0
@@ -220,7 +219,7 @@ class PIO(SafeStruct):
       for bit in range(3,8):
         m = 1 << bit
         if diff & m:
-          self.la.Append('PA%d' % bit, exactcycle, ((self.PAO & m) != 0))
+          self.la.Append('PA%d' % bit, exactcycle, self.PAO & m != 0)
 
   def readPortA(self, addr, bits, val, rw):
     pactl = self.pactl_cache
@@ -260,7 +259,7 @@ class PIO(SafeStruct):
       for bit in range(8):
         m = 1 << bit
         if diff & m:
-          self.la.Append('PB%d' % bit, self.sim.cycles, ((val & m) != 0))
+          self.la.Append('PB%d' % bit, self.sim.cycles, val & m != 0)
 
   def updatePCO(self, ddrc=None):
     ddrc = ddrc or self.memory.readUns8(self.memory.DDRC)   # 1 for bits marked as outputs
@@ -273,7 +272,7 @@ class PIO(SafeStruct):
       for bit in range(8):
         m = 1 << bit
         if diff & ddrc & m:
-          self.la.Append('PC%d' % bit, self.sim.cycles, ((self.PCO & m) != 0))
+          self.la.Append('PC%d' % bit, self.sim.cycles, self.PCO & m != 0)
 
   def writeDDRC(self, addr, bits, val, rw): self.updatePCO(val)
 
@@ -297,7 +296,7 @@ class PIO(SafeStruct):
       for bit in range(6):
         m = 1 << bit
         if diff & ddrd & m:
-          self.la.Append('PD%d' % bit, self.sim.cycles, ((self.PDO & m) != 0))
+          self.la.Append('PD%d' % bit, self.sim.cycles, self.PDO & m != 0)
 
   def writeDDRD(self, addr, bits, val, rw): self.updatePDO(val)
 
@@ -406,7 +405,7 @@ class PIO(SafeStruct):
 
     if port == 'PA' and bit in [0,1,2,3,7]:
       #print self.sim.cycles, ' Old PAI:', hex(self.PAI)
-      newPAI = (self.PAI & mask) | bitval
+      newPAI = self.PAI & mask | bitval
       self.CheckInputCaptureAndPA(bit, newPAI, atTime)
       self.PAI = newPAI
       #print self.sim.cycles, ' New PAI:', hex(self.PAI)
@@ -425,40 +424,35 @@ class PIO(SafeStruct):
 
     if bit == 0:
       action = tctl2 & (EDG3B|EDG3A)
-      if (   (action == EDG3A and rising) \
-          or (action == EDG3B and falling) \
-          or (action == EDG3A|EDG3B) \
-         ):
+      if action == EDG3A and rising or \
+         action == EDG3B and falling or \
+         action == EDG3A|EDG3B:
         self.events.notifyEvent(self.events.IC3, (atTime,))
     elif bit == 1:
       action = tctl2 & (EDG2B|EDG2A)
-      if (   (action == EDG2A and rising) \
-          or (action == EDG2B and falling) \
-          or (action == EDG2A|EDG2B) \
-         ):
+      if action == EDG2A and rising or \
+         action == EDG2B and falling or \
+         action == EDG2A|EDG2B:
         self.events.notifyEvent(self.events.IC2, (atTime,))
     elif bit == 2:
       action = tctl2 & (EDG1B|EDG1A)
-      if (   (action == EDG1A and rising) \
-          or (action == EDG1B and falling) \
-          or (action == EDG1A|EDG1B) \
-         ):
+      if action == EDG1A and rising or \
+         action == EDG1B and falling or \
+         action == EDG1A|EDG1B:
         self.events.notifyEvent(self.events.IC1, (atTime,))
     elif bit == 3:
       if self.pactl_cache & I4_O5 == I4_O5:
-        action = (tctl2 & (EDG4B|EDG4A))
-        if (   (action == EDG4A and rising) \
-            or (action == EDG4B and falling) \
-            or (action == EDG4A|EDG4B) \
-           ):
+        action = tctl2 & (EDG4B|EDG4A)
+        if action == EDG4A and rising or \
+           action == EDG4B and falling or \
+           action == EDG4A|EDG4B:
           self.events.notifyEvent(self.events.IC4, (atTime,))
     elif bit == 7:
       # Check that PA is enabled, PA7 is an input, event counter mode
       if self.pactl_cache & (DDRA7|PAEN|PAMOD) == PAEN:
         # Now check to see if we got the right edge
-        if (   (self.pactl_cache & PEDGE == 0 and falling) \
-            or (self.pactl_cache & PEDGE!=0 and rising) \
-           ):
+        if self.pactl_cache & PEDGE == 0 and falling or \
+           self.pactl_cache & PEDGE!=0 and rising:
           self.pacnt = self.pacnt+1
           self.events.notifyEvent(self.events.PAI)
           if self.pacnt == 256:
@@ -481,47 +475,40 @@ def install(sim, parentWindow):
 
   pe = ucPeripheral(T, 'Parallel I/O')
 
+  filter = PySim11.memory.ucMemoryFilter
+  addfilter = sim.ucMemory.addFilter
+  addhandler = T.events.addHandler
+
   # Register memory handler to handle reads/writes of Port A, B, C, D, E
-  f = PySim11.memory.ucMemoryFilter(T.memory.PORTA, T.memory.PORTA, None, T.readPortA, T.writePortA)
-  sim.ucMemory.addFilter(f)
-  f = PySim11.memory.ucMemoryFilter(T.memory.PORTB, T.memory.PORTB, None, None, T.writePortB)
-  sim.ucMemory.addFilter(f)
-  f = PySim11.memory.ucMemoryFilter(T.memory.PORTC, T.memory.PORTC, None, T.readPortC, T.writePortC)
-  sim.ucMemory.addFilter(f)
-  f = PySim11.memory.ucMemoryFilter(T.memory.PORTD, T.memory.PORTD, None, T.readPortD, T.writePortD)
-  sim.ucMemory.addFilter(f)
-  f = PySim11.memory.ucMemoryFilter(T.memory.PORTE, T.memory.PORTE, None, T.readPortE, None)
-  sim.ucMemory.addFilter(f)
+  addfilter(filter(T.memory.PORTA, T.memory.PORTA, None, T.readPortA, T.writePortA))
+  addfilter(filter(T.memory.PORTB, T.memory.PORTB, None, None, T.writePortB))
+  addfilter(filter(T.memory.PORTC, T.memory.PORTC, None, T.readPortC, T.writePortC))
+  addfilter(filter(T.memory.PORTD, T.memory.PORTD, None, T.readPortD, T.writePortD))
+  addfilter(filter(T.memory.PORTE, T.memory.PORTE, None, T.readPortE, None))
 
   # Trap DDRC and DDRD to update Ports C and D if necessary
-  f = PySim11.memory.ucMemoryFilter(T.memory.DDRC, T.memory.DDRC, None, None, T.writeDDRC)
-  sim.ucMemory.addFilter(f)
-  f = PySim11.memory.ucMemoryFilter(T.memory.DDRD, T.memory.DDRD, None, None, T.writeDDRD)
-  sim.ucMemory.addFilter(f)
+  addfilter(filter(T.memory.DDRC, T.memory.DDRC, None, None, T.writeDDRC))
+  addfilter(filter(T.memory.DDRD, T.memory.DDRD, None, None, T.writeDDRD))
 
   # Register memory handler to handle writes of OC1M, TCTL1, and PACTL
   # as these can affect the data driven onto Port A.
   # Read PACNT through us, too.
-  f = PySim11.memory.ucMemoryFilter(T.memory.OC1M, T.memory.OC1M, None, None, T.writeOC1M)
-  sim.ucMemory.addFilter(f)
-  f = PySim11.memory.ucMemoryFilter(T.memory.PACTL, T.memory.PACTL, None, None, T.writePACTL)
-  sim.ucMemory.addFilter(f)
-  f = PySim11.memory.ucMemoryFilter(T.memory.TCTL1, T.memory.TCTL1, None, None, T.writeTCTL1)
-  sim.ucMemory.addFilter(f)
-  f = PySim11.memory.ucMemoryFilter(T.memory.PACNT, T.memory.PACNT, None, T.readPACNT, T.writePACNT)
-  sim.ucMemory.addFilter(f)
+  addfilter(filter(T.memory.OC1M, T.memory.OC1M, None, None, T.writeOC1M))
+  addfilter(filter(T.memory.PACTL, T.memory.PACTL, None, None, T.writePACTL))
+  addfilter(filter(T.memory.TCTL1, T.memory.TCTL1, None, None, T.writeTCTL1))
+  addfilter(filter(T.memory.PACNT, T.memory.PACNT, None, T.readPACNT, T.writePACNT))
 
   # Register event handlers for output compares
-  T.events.addHandler(T.events.OC1, T.OCEvent)
-  T.events.addHandler(T.events.OC2, T.OCEvent)
-  T.events.addHandler(T.events.OC3, T.OCEvent)
-  T.events.addHandler(T.events.OC4, T.OCEvent)
-  T.events.addHandler(T.events.OC5, T.OCEvent)
+  addhandler(T.events.OC1, T.OCEvent)
+  addhandler(T.events.OC2, T.OCEvent)
+  addhandler(T.events.OC3, T.OCEvent)
+  addhandler(T.events.OC4, T.OCEvent)
+  addhandler(T.events.OC5, T.OCEvent)
 
   # Register system event handlers for simulation start/stop
-  T.events.addHandler(T.events.SimStart, T.OnSimStart)
-  T.events.addHandler(T.events.SimEnd, T.OnSimEnd)
+  addhandler(T.events.SimStart, T.OnSimStart)
+  addhandler(T.events.SimEnd, T.OnSimEnd)
 
   # Handler for when to reset the display panel
-  T.events.addHandler(T.events.CycReset, T.OnCycReset)
+  addhandler(T.events.CycReset, T.OnCycReset)
   return pe

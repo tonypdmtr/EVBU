@@ -31,9 +31,8 @@ class LACursors(wx.Window):
     self.active = 1    # 1 for cursor 1, 2 for cursor 2
     self.grab = 0      # 1 for cursor 1, 2 for cursor 2
 
-  def IsEnabled1(self): return not (self.pos1 is None)
-
-  def IsEnabled2(self): return not (self.pos2 is None)
+  def IsEnabled1(self): return self.pos1 is not None
+  def IsEnabled2(self): return self.pos2 is not None
 
   def SetStartTime(self, T):
     assert repr(type(T)) == "<class 'int'>"
@@ -92,13 +91,8 @@ class LACursors(wx.Window):
         else: dc.SetBrush(wx.Brush(self.lineColor2, wx.TRANSPARENT))
         dc.DrawPolygon([wx.Point(0,h), wx.Point(-4,h-4), wx.Point(-4,0), wx.Point(4,0), wx.Point(4,h-4)], xoffset=x)
 
-  def GetC1Pos(self):
-    if self.pos1 is not None: return self.pos1
-    return 0
-
-  def GetC2Pos(self):
-    if self.pos2 is not None: return self.pos2
-    return 0
+  def GetC1Pos(self): return self.pos1 or 0
+  def GetC2Pos(self): return self.pos2 or 0
 
   def SetC1Off(self):
     self.pos1 = None

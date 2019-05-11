@@ -97,41 +97,41 @@ class BuffaloServices(SafeStruct):
 
   # I don't think this works the way it's supposed to. Why is it still here?
   if 0:
-            def __intdispatch(self, simstate, JSCIoffset, text):
-              # See if the secondary jump table offset is 'JMP STOPIT'. If not,
-              # it's a user-installed vector and we take it.
-              JSCIaddr = JSCI + JSCIoffset
-              if simstate.ucMemory.readRawTuple8(JSCIaddr, JSCIaddr+2) == (0x7E, STOPITH, STOPITL):
-                # It's an unhandled interrupt
-                raise UnhandledInterrupt(f'!!! Unhandled {text} interrupt !!!')
+    def __intdispatch(self, simstate, JSCIoffset, text):
+      # See if the secondary jump table offset is 'JMP STOPIT'. If not,
+      # it's a user-installed vector and we take it.
+      JSCIaddr = JSCI + JSCIoffset
+      if simstate.ucMemory.readRawTuple8(JSCIaddr, JSCIaddr+2) == (0x7E, STOPITH, STOPITL):
+        # It's an unhandled interrupt
+        raise UnhandledInterrupt(f'!!! Unhandled {text} interrupt !!!')
 
-              # It's a handled interrupt. Let the user do whatever he wants.
-              # We jump to this address by pushing it on the stack since the
-              # virtual function handler in PySim11.step() assumes all virtual
-              # functions end in RTS.
-              simstate.ucState.push16(simstate.ucMemory, JSCIaddr)
+      # It's a handled interrupt. Let the user do whatever he wants.
+      # We jump to this address by pushing it on the stack since the
+      # virtual function handler in PySim11.step() assumes all virtual
+      # functions end in RTS.
+      simstate.ucState.push16(simstate.ucMemory, JSCIaddr)
 
-            def intSCI(self, simstate): self.__intdispatch(simstate, 0, "SCI")
-            def intSPIE(self, simstate): self.__intdispatch(simstate, 3, "SPI")
-            def intPAII(self, simstate): self.__intdispatch(simstate, 6, "PAI")
-            def intPAOVI(self, simstate): self.__intdispatch(simstate, 9, "PAOV")
-            def intTOI(self, simstate): self.__intdispatch(simstate, 12, "TOI")
-            def intOC5I(self, simstate): self.__intdispatch(simstate, 15, "OC5")
-            def intOC4I(self, simstate): self.__intdispatch(simstate, 18, "OC4")
-            def intOC3I(self, simstate): self.__intdispatch(simstate, 21, "OC3")
-            def intOC2I(self, simstate): self.__intdispatch(simstate, 24, "OC2")
-            def intOC1I(self, simstate): self.__intdispatch(simstate, 27, "OC1")
-            def intIC4I(self, simstate): self.__intdispatch(simstate, 30, "OC5") # IC4 is the same as OC5
-            def intIC3I(self, simstate): self.__intdispatch(simstate, 30, "IC3")
-            def intIC2I(self, simstate): self.__intdispatch(simstate, 33, "IC2")
-            def intIC1I(self, simstate): self.__intdispatch(simstate, 36, "IC1")
-            def intRTII(self, simstate): self.__intdispatch(simstate, 39, "RTI")
-            def intIRQ(self, simstate): self.__intdispatch(simstate, 42, "IRQ")
-            def intXIRQ(self, simstate): self.__intdispatch(simstate, 45, "XIRQ")
-            def intSWI(self, simstate): self.__intdispatch(simstate, 48, "SWI")
-            def intILLOP(self, simstate): self.__intdispatch(simstate, 51, "ILLOP")
-            def intCOP(self, simstate): self.__intdispatch(simstate, 54, "COP")
-            def intCLOCKMON(self, simstate): self.__intdispatch(simstate, 57, "CLOCKMON")
+    def intSCI(self, simstate): self.__intdispatch(simstate, 0, "SCI")
+    def intSPIE(self, simstate): self.__intdispatch(simstate, 3, "SPI")
+    def intPAII(self, simstate): self.__intdispatch(simstate, 6, "PAI")
+    def intPAOVI(self, simstate): self.__intdispatch(simstate, 9, "PAOV")
+    def intTOI(self, simstate): self.__intdispatch(simstate, 12, "TOI")
+    def intOC5I(self, simstate): self.__intdispatch(simstate, 15, "OC5")
+    def intOC4I(self, simstate): self.__intdispatch(simstate, 18, "OC4")
+    def intOC3I(self, simstate): self.__intdispatch(simstate, 21, "OC3")
+    def intOC2I(self, simstate): self.__intdispatch(simstate, 24, "OC2")
+    def intOC1I(self, simstate): self.__intdispatch(simstate, 27, "OC1")
+    def intIC4I(self, simstate): self.__intdispatch(simstate, 30, "OC5") # IC4 is the same as OC5
+    def intIC3I(self, simstate): self.__intdispatch(simstate, 30, "IC3")
+    def intIC2I(self, simstate): self.__intdispatch(simstate, 33, "IC2")
+    def intIC1I(self, simstate): self.__intdispatch(simstate, 36, "IC1")
+    def intRTII(self, simstate): self.__intdispatch(simstate, 39, "RTI")
+    def intIRQ(self, simstate): self.__intdispatch(simstate, 42, "IRQ")
+    def intXIRQ(self, simstate): self.__intdispatch(simstate, 45, "XIRQ")
+    def intSWI(self, simstate): self.__intdispatch(simstate, 48, "SWI")
+    def intILLOP(self, simstate): self.__intdispatch(simstate, 51, "ILLOP")
+    def intCOP(self, simstate): self.__intdispatch(simstate, 54, "COP")
+    def intCLOCKMON(self, simstate): self.__intdispatch(simstate, 57, "CLOCKMON")
 
   def input(self, simstate):
     try:
@@ -222,7 +222,7 @@ class BuffaloServices(SafeStruct):
       # location but I don't see the point. The programmer
       # should do the error checking.
       return
-    val = (val | (simstate.ucMemory.readUns16(SHFTREG) << 4)) & 0xFFFF
+    val = (val | simstate.ucMemory.readUns16(SHFTREG) << 4) & 0xFFFF
     simstate.ucMemory.writeUns16(SHFTREG, val)
 
   def chgbyt(self, simstate):

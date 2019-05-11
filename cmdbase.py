@@ -91,11 +91,8 @@ class Cmdbase:
     self.postloop()
 
   def precmd(self, line): return line
-
   def postcmd(self, stop, line): return stop
-
   def preloop(self): pass
-
   def postloop(self): pass
 
   def onecmd(self, line):
@@ -179,7 +176,7 @@ class Cmdbase:
         self.write(self.ruler * len(header))
         self.write('\n')
       cmds_per_line,junk=divmod(maxcol,cmdlen)
-      col=cmds_per_line
+      col = cmds_per_line
       for cmd in cmds:
         if col == 0: self.write('\n')
         self.write( (("%-"+str(cmdlen)+"s") % cmd))

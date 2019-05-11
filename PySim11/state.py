@@ -82,15 +82,15 @@ class ucState(SafeStruct):
     for h in self.Dhandlers: h(*self, D)
     self.A, self.B = divmod(D, 256)
 
-  def setHNZVC(self, flags): self.setCC((self.CC & 0xD0) | flags)
-  def setNZVC(self, flags): self.setCC((self.CC & 0xF0) | flags)
-  def setNZV(self, flags): self.setCC((self.CC & 0xF1) | flags)
-  def setZVC(self, flags): self.setCC((self.CC & 0xF8) | flags)
-  def setC(self, flags): self.setCC((self.CC & 0xFE) | flags)
-  def setI(self, flags): self.setCC((self.CC & 0xEF) | flags)
-  def setV(self, flags): self.setCC((self.CC & 0xFD) | flags)
-  def setZ(self, flags): self.setCC((self.CC & 0xFB) | flags)
-  def setXbit(self, flags): self.setCC((self.CC & 0xBF) | flags)
+  def setHNZVC(self, flags): self.setCC(self.CC & 0xD0 | flags)
+  def setNZVC(self, flags): self.setCC(self.CC & 0xF0 | flags)
+  def setNZV(self, flags): self.setCC(self.CC & 0xF1 | flags)
+  def setZVC(self, flags): self.setCC(self.CC & 0xF8 | flags)
+  def setC(self, flags): self.setCC(self.CC & 0xFE | flags)
+  def setI(self, flags): self.setCC(self.CC & 0xEF | flags)
+  def setV(self, flags): self.setCC(self.CC & 0xFD | flags)
+  def setZ(self, flags): self.setCC(self.CC & 0xFB | flags)
+  def setXbit(self, flags): self.setCC(self.CC & 0xBF | flags)
 
   def isCarrySet(self): return 1 if self.CC & CC_C else 0
   def isZeroSet(self): return 1 if self.CC & CC_Z else 0
@@ -103,18 +103,18 @@ class ucState(SafeStruct):
 
   def push8(self, memory, data):
     memory.writeUns8(self.SP, data)
-    self.setSP((self.SP-1) & 0xFFFF)
+    self.setSP(self.SP-1 & 0xFFFF)
 
   def push16(self, memory, data):
-    ea = (self.SP-1) & 0xFFFF
+    ea = self.SP-1 & 0xFFFF
     memory.writeUns16(ea, data)
-    self.setSP((self.SP - 2) & 0xFFFF)
+    self.setSP(self.SP-2 & 0xFFFF)
 
   def pull8(self, memory):
-    self.setSP((self.SP+1) & 0xFFFF)
+    self.setSP(self.SP+1 & 0xFFFF)
     return memory.readUns8(self.SP)
 
   def pull16(self, memory):
-    ea = (self.SP+1) & 0xFFFF
-    self.setSP((self.SP+2) & 0xFFFF)
+    ea = self.SP+1 & 0xFFFF
+    self.setSP(self.SP+2 & 0xFFFF)
     return memory.readUns16(ea)

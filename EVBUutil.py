@@ -71,25 +71,25 @@ def getu16(line, simstate=None):
 def getu16u16(line, simstate=None):
   "Expecting two 16-bit unsigned integers"
   fields = parseFields(line, 2, 2)
-  return (parseu16(fields[0], simstate), parseu16(fields[1], simstate))
+  return parseu16(fields[0], simstate), parseu16(fields[1], simstate)
 
 def getu16u16optu16(line, simstate=None):
   "Expecting two or three 16-bit unsigned integers"
   fields = parseFields(line, 2, 3)
   if len(fields) > 2:
-    return (parseu16(fields[0], simstate), parseu16(fields[1], simstate), parseu16(fields[2], simstate))
-  return (parseu16(fields[0], simstate), parseu16(fields[1], simstate), None)
+    return parseu16(fields[0], simstate), parseu16(fields[1], simstate), parseu16(fields[2], simstate)
+  return parseu16(fields[0], simstate), parseu16(fields[1], simstate), None
 
 def getu16u16u8(line, simstate=None):
   "Expecting two 16-bit unsigned integers and an 8-bit unsigned integer"
   fields = parseFields(line, 3, 3)
-  return (parseu16(fields[0], simstate), parseu16(fields[1], simstate), parseu8(fields[2], simstate))
+  return parseu16(fields[0], simstate), parseu16(fields[1], simstate), parseu8(fields[2], simstate)
 
 def getu16optu16(line, simstate=None):
   "Expecting one-to-two 16-bit unsigned integers"
   fields = parseFields(line, 1, 2)
   if len(fields) == 1: return (parseu16(fields[0], simstate), None)
-  return (parseu16(fields[0], simstate), parseu16(fields[1], simstate))
+  return parseu16(fields[0], simstate), parseu16(fields[1], simstate)
 
 def getoptu16(line, simstate=None):
   "Expecting zero-to-one 16-bit unsigned integers"
@@ -102,8 +102,8 @@ def getoptu16optu16(line, simstate=None):
   if len(fields) == 1:
     return (parseu16(fields[0], simstate), None)
   elif len(fields) == 2:
-    return (parseu16(fields[0], simstate), parseu16(fields[1], simstate))
-  return (None, None)
+    return parseu16(fields[0], simstate), parseu16(fields[1], simstate)
+  return None, None
 
 def getu8(line, simstate=None):
   "Expecting a single 8-bit unsigned integer"

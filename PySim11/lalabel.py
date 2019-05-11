@@ -36,7 +36,7 @@ class LALabel(wx.Window):
     self.backgroundColor = wx.Colour('DIM GREY')
 
     self.parent = parent
-    self.label = ""
+    self.label = ''
 
   def SetLabel(self, L):
     assert type(L) is types.StringType

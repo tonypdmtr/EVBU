@@ -261,7 +261,7 @@ class LAData(wx.Window):
         if T > w: break
         dc.DrawLine(T, 0, T, 4)
         dc.DrawLine(T, h-4, T, h)
-        firstTime = firstTime + self.division
+        firstTime += self.division
 
     # Draw cursors
     if self.cursor1 is not None:

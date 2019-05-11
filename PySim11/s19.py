@@ -30,8 +30,7 @@ def S19reader(Filename, Memory, verify = 0):
   S-records).'''
 
   Filename = add_extension(Filename)
-  with open(Filename, 'rt') as fid: lines = fid.readlines()
-  fid.close()
+  with open(Filename, 'rt') as fid: lines = fid.readlines(); fid.close()
 
   retaddr = None
   ignoreCount = 0
@@ -45,14 +44,14 @@ def S19reader(Filename, Memory, verify = 0):
     typ, count, addr, data, chksum = m.groups()
 
     if typ in '19':
-      if (len(data) & 0x01):
+      if len(data) & 0x01:
         raise ValueError(f'Odd-length data at line {lineix}')
 
       count = int(count,16)
       addr = int(addr, 16)
-      chksum = int(chksum, 16) + count + (addr//256) + (addr%256) + 1
+      chksum = int(chksum, 16) + count + int(addr/256) + (addr%256) + 1
 
-      if count != (3+len(data)//2):
+      if count != 3+int(len(data)/2):
         raise ValueError(f'Record count mismatch at line {lineix}')
 
       if typ == '9':
@@ -68,7 +67,7 @@ def S19reader(Filename, Memory, verify = 0):
       if count <= 3:
         raise ValueError(f'Unexpected empty S1 record at line {lineix}')
 
-      for count in range(len(data)//2):
+      for count in range(int(len(data)/2)):
         val = int(data[2*count:2*count+2],16)
         if verify:
           if Memory.readUns8(addr+count) != val:

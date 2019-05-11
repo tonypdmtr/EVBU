@@ -95,13 +95,13 @@ class SimState(SafeStruct):
   def fetch8(self):
     PC = self.ucState.PC
     val = self.ucMemory.readUns8(PC)
-    self.ucState.setPC((PC+1) & 0xFFFF)
+    self.ucState.setPC(PC+1 & 0xFFFF)
     return val
 
   def fetch16(self):
     PC = self.ucState.PC
     val = self.ucMemory.readUns16(PC)
-    self.ucState.setPC((PC+2) & 0xFFFF)
+    self.ucState.setPC(PC+2 & 0xFFFF)
     return val
 
   def decode(self, mode):
@@ -115,25 +115,25 @@ class SimState(SafeStruct):
       elif mode == DIR: addr = self.fetch8()
       elif mode == INDX:
         offset = self.fetch8()
-        addr = (offset + self.ucState.X) & 0xFFFF
+        addr = offset + self.ucState.X & 0xFFFF
       elif mode == INDY:
         offset = self.fetch8()
-        addr = (offset + self.ucState.Y) & 0xFFFF
+        addr = offset + self.ucState.Y & 0xFFFF
       return (addr, value, offset)
 
     elif mode == REL:
       addr = math11.TwosC8ToInt(self.fetch8())
-      addr = (addr + self.ucState.PC) & 0xFFFF
+      addr = addr + self.ucState.PC & 0xFFFF
       return (addr,)
 
     elif mode in [BIT2DIR, BIT2INDX, BIT2INDY]:
       if mode == BIT2DIR: addr = self.fetch8()
       elif mode == BIT2INDX:
         offset = self.fetch8()
-        addr = (offset + self.ucState.X) & 0xFFFF
+        addr = offset + self.ucState.X & 0xFFFF
       elif mode == BIT2INDY:
         offset = self.fetch8()
-        addr = (offset + self.ucState.Y) & 0xFFFF
+        addr = offset + self.ucState.Y & 0xFFFF
       value = self.fetch8()
       return (addr, value, offset)
 
@@ -141,13 +141,13 @@ class SimState(SafeStruct):
       if mode == BIT3DIR: addr = self.fetch8()
       elif mode == BIT3INDX:
         offset = self.fetch8()
-        addr = (offset + self.ucState.X) & 0xFFFF
+        addr = offset + self.ucState.X & 0xFFFF
       elif mode == BIT3INDY:
         offset = self.fetch8()
-        addr = (offset + self.ucState.Y) & 0xFFFF
+        addr = offset + self.ucState.Y & 0xFFFF
       value = self.fetch8()
       newpc = math11.TwosC8ToInt(self.fetch8())
-      newpc = (newpc + self.ucState.PC) & 0xFFFF
+      newpc = newpc + self.ucState.PC & 0xFFFF
       return (addr, value, newpc, offset)
     else: raise ops.InternalError('Unknown instruction mode')
 
@@ -287,37 +287,29 @@ class SimState(SafeStruct):
           self.printNextInstruction()
 
       except ucBreakpoint as br:
-        if br.text: self.write(br.text+'\n')
+        if br.text: self.write(br.text+'\n\n')
         done = 1
-        self.write('\n')
       except ops.SWIInstruction:
-        self.write('SWI instruction encountered\n')
+        self.write('SWI instruction encountered\n\n')
         done = 1
-        self.write('\n')
       except ops.StopInstruction:
-        self.write('STOP instruction encountered\n')
+        self.write('STOP instruction encountered\n\n')
         done = 1
-        self.write('\n')
       except ops.WaitInstruction:
-        self.write('WAI instruction encountered\n')
+        self.write('WAI instruction encountered\n\n')
         done = 1
-        self.write('\n')
       except ops.TestInstruction:
-        self.write('TEST instruction encountered\n')
+        self.write('TEST instruction encountered\n\n')
         done = 1
-        self.write('\n')
       except ops.IllegalOperation:
-        self.write('Illegal instruction encountered\n')
+        self.write('Illegal instruction encountered\n\n')
         done = 1
-        self.write('\n')
       except KeyboardInterrupt:
-        self.write('Execution interrupted\n')
+        self.write('Execution interrupted\n\n')
         done = 1
-        self.write('\n')
       except Exception as detail:
-        if detail: self.write(str(detail)+'\n')
+        if detail: self.write(str(detail)+'\n\n')
         done = 1
-        self.write('\n')
       # end try
 
       # Branch force only works in trace mode for the first instruction
