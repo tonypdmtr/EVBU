@@ -49,7 +49,7 @@ def S19reader(Filename, Memory, verify = 0):
 
       count = int(count,16)
       addr = int(addr, 16)
-      chksum = int(chksum, 16) + count + int(addr/256) + (addr%256) + 1
+      chksum = int(chksum, 16) + count + int(addr/256) + addr%256 + 1
 
       if count != 3+int(len(data)/2):
         raise ValueError(f'Record count mismatch at line {lineix}')
