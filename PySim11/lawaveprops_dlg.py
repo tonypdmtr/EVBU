@@ -286,7 +286,7 @@ class LAWaveformProperties(wx.Dialog):
     self.Bind(wx.EVT_LISTBOX_DCLICK,self.OnListBoxDoubleClick,id=100) #EVT_LISTBOX_DCLICK(self, 100, self.OnListBoxDoubleClick)
     self.Bind(wx.EVT_BUTTON,self.OnBrowse,id=102) #EVT_BUTTON(self, 102, self.OnBrowse)
     self.Bind(wx.EVT_TEXT_ENTER,self.OnTextEnter,id=101) #EVT_TEXT_ENTER(self, 101, self.OnTextEnter)
-    self.Bind(wx.EVT_BUTTON,self.OnOk,id=ID_) #EVT_BUTTON(self, wx.ID_OK, self.OnOk)
+    self.Bind(wx.EVT_BUTTON,self.OnOk,id=wx.ID_OK) #EVT_BUTTON(self, wx.ID_OK, self.OnOk)
 
   def OnOk(self, event):
     # Don't allow OK button when no selection. We kind-of handle

@@ -26,7 +26,7 @@ def dasm(instr, mode, parms):
   elif mode == BIT2DIR:  s += '$%02X #$%02X' % (parms[0], parms[1])
   elif mode == BIT2INDX: s += '%d,X #$%02X' % (parms[2], parms[1])
   elif mode == BIT2INDY: s += '%d,Y #$%02X' % (parms[2], parms[1])
-  elif mode == BIT3DIR:  s += '$%02X #$%02X $%04X' % (parms[0], parms[1], parm[2])
+  elif mode == BIT3DIR:  s += '$%02X #$%02X $%04X' % (parms[0], parms[1], parms[2])
   elif mode == BIT3INDX: s += '%d,X #$%02X $%04X' % (parms[3], parms[1], parms[2])
   elif mode == BIT3INDY: s += '%d,Y #$%02X $%04X' % (parms[3], parms[1], parms[2])
   return s
