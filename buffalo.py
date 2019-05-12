@@ -61,7 +61,6 @@ import time
 
 from safestruct import *
 
-import evbu
 from PySim11 import PySim11
 from PySim11.ops import UnhandledInterrupt
 from PySim11.state import CC_Z
