@@ -718,7 +718,7 @@ TY       -- Take next branch          | Default base is hexadecimal. The
                                       | leading $ sign is optional.
 ''')
 
-if __name__ == "__main__":
+def main():
   import threading
   import queue
 
@@ -797,3 +797,5 @@ if __name__ == "__main__":
   app = MyApp(0)    # Create an instance of the application class
   app.MainLoop()    # Tell it to start processing events
   os.chdir(cwd)     # Restore working directory on exit
+
+if __name__ == "__main__": main()

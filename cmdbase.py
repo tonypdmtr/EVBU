@@ -119,7 +119,7 @@ class Cmdbase:
       self.write(self.lastcmd+'\n')
       return self.onecmd(self.lastcmd)
 
-  def default(self, line): self.write(f'*** Unknown syntax: {line}')
+  def default(self, line): self.write(f'*** Unknown syntax: {line}\n')
 
   def do_help(self, arg):
     if arg:
