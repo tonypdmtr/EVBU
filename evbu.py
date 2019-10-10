@@ -25,12 +25,13 @@ class EVBUCmd(cmdbase.Cmdbase):
     self.write('''\
 68HC11 EVBU Simulator Version %d.%d. PySim11 Version %d.%d.
 Copyright 1999-2004 Andrew Sterian.
-Python 3 and wxPython Phoenix adaptation (2019) by Tony Papadimitriou <tonyp@acm.org>
+Python 3 and wxPython Phoenix adaptation (2019) \
+by Tony Papadimitriou <tonyp@acm.org>
 
-EVBU comes with ABSOLUTELY NO WARRANTY. This is free software licensed under
-the terms of the GNU General Public License (GPL). You are welcome to
-redistribute this software under certain conditions. For more details, see
-the file named COPYING that comes with this software.
+EVBU comes with ABSOLUTELY NO WARRANTY. This is free software licensed under \
+the terms of the GNU General Public License (GPL). You are welcome to \
+redistribute this software under certain conditions. For more details, \
+see the file named COPYING that comes with this software.
 
 Type 'help overview' for a summary of all commands. Type 'quit' to exit.
 ''' % (EVBUoptions.EVBUVersionMajor, EVBUoptions.EVBUVersionMinor,\
@@ -54,10 +55,9 @@ Type 'help overview' for a summary of all commands. Type 'quit' to exit.
 
   def help_print(self): self.write('''\
 PRINT <value>
-Evaluates the expression as a 16-bit integer and prints the hex
-and decimal value. This command is useful for testing out the
-interpreter's expression evaluator and for finding the values
-of symbols loaded from a MAP file.
+Evaluates the expression as a 16-bit integer and prints the hex and decimal \
+value. This command is useful for testing out the interpreter's expression \
+evaluator and for finding the values of symbols loaded from a MAP file.
 ''')
 
   def do_asm(self, line):
@@ -94,8 +94,8 @@ of symbols loaded from a MAP file.
 
   def help_asm(self): self.write('''\
 ASM [<addr>]
-Disassemble instructions at the specified address. If the address is ommitted,
-disassembly continues from the last disassembled address.
+Disassemble instructions at the specified address. If the address is \
+ommitted, disassembly continues from the last disassembled address.
 ''')
 
   def do_l(self, line):
@@ -119,10 +119,10 @@ disassembly continues from the last disassembled address.
 
     try: fnum = mapfile.fnames.index(fname)
     except:
-      self.write("Internal error: unable to find filename '%s'\n" % fname)
+      self.write(f"Internal error: unable to find filename '{fname}'\n")
       return
 
-    self.write('%s:\n' % fname)
+    self.write(f'{fname}:\n')
 
     min_line = linenum - int(count/2)
     min_line = max(min_line, 1)
@@ -137,10 +137,9 @@ disassembly continues from the last disassembled address.
 
   def help_l(self): self.write('''\
 L [<num>]
-This command displays the source lines around the current PC
-value if a MAP file is loaded. The optional argument indicates
-the number of lines to display. The line corresponding to the
-current PC is centered in the display.
+This command displays the source lines around the current PC value if a \
+MAP file is loaded. The optional argument indicates the number of lines to \
+display. The line corresponding to the current PC is centered in the display.
 ''')
 
   def do_bf(self, line):
@@ -160,8 +159,8 @@ current PC is centered in the display.
 
   def help_bf(self): self.write('''\
 BF <Addr1> <Addr2> <data>
-This command fills the range of memory from Addr1 through Addr2 with
-the 8-bit data value.
+This command fills the range of memory from Addr1 through Addr2 with the \
+8-bit data value.
 ''')
 
   def do_br(self, line):
@@ -220,13 +219,12 @@ the 8-bit data value.
 
   def help_br(self): self.write('''\
 BR [<address> | -<bpnum> | -all]
-This command manages breakpoints. The first form, 'BR <address>'
-adds a breakpoint at the specified address (which may be a symbol
-if a MAP file is loaded). The second form, 'BR -<bpnum>' removes
-a breakpoint whose number is given. The first breakpoint is 0.
-Breakpoint numbers can be found by issuing a 'BR' command by
-itself which simply lists all breakpoints. The final form of this
-command, 'BR -all' removes all breakpoints.
+This command manages breakpoints. The first form, 'BR <address>' adds a \
+breakpoint at the specified address (which may be a symbol if a MAP file is \
+loaded). The second form, 'BR -<bpnum>' removes a breakpoint whose number is \
+given. The first breakpoint is 0. Breakpoint numbers can be found by issuing \
+a 'BR' command by itself which simply lists all breakpoints. The final form \
+of this command, 'BR -all' removes all breakpoints.
 ''')
 
   def do_bulk(self, line):
@@ -265,7 +263,7 @@ This command sets all memory locations in internal EEPROM to $FF
 
   def help_call(self): self.write('''\
 CALL <address>
-Begin execution at the specified address as a subroutine call. The
+Begin execution at the specified address as a subroutine call. The \
 corresponding RTS instruction terminates execution.
 ''')
 
@@ -282,9 +280,9 @@ corresponding RTS instruction terminates execution.
 
   def help_cyc(self): self.write('''\
 CYC ['reset']
-With no parameters, this command displays the number of cycles executed so far.
-The command 'CYC reset' resets the cycle counter to 0 and resets (i.e., clears)
-the parallel I/O waveform display.
+With no parameters, this command displays the number of cycles executed so \
+far. The command 'CYC reset' resets the cycle counter to 0 and resets (i.e., \
+clears) the parallel I/O waveform display.
 ''')
 
   def do_go(self, line):
@@ -308,10 +306,10 @@ the parallel I/O waveform display.
 
   def help_go(self): self.write('''\
 GO [<address>]
-Execution begins at the specified address, or at the current PC value if no
-address is given. Execution terminates at a breakpoint or an SWI instruction.
-The cycle counter is reset to 0 and the parallel I/O waveform display is
-reset.
+Execution begins at the specified address, or at the current PC value if no \
+address is given. Execution terminates at a breakpoint or an SWI \
+instruction. The cycle counter is reset to 0 and the parallel I/O waveform \
+display is reset.
 ''')
   def do_cd(self, line):
     "CD <directory>"
@@ -326,8 +324,8 @@ reset.
   def help_cd(self):
     self.write('''\
 CD [directory]
-Change the working directory to the one specified. If no
-directory is specified, the current one is displayed.
+Change the working directory to the one specified. If no directory is \
+specified, the current one is displayed.
 ''')
 
   def do_load(self, line):
@@ -344,8 +342,8 @@ directory is specified, the current one is displayed.
 
   def help_load(self): self.write('''\
 LOAD <filename>
-The S19 file specified is loaded into memory. If a MAP file
-is present in the same directory, it is loaded too.
+The S19 file specified is loaded into memory. If a MAP file is present in \
+the same directory, it is loaded too.
 ''')
 
   def do_loadmap(self, line):
@@ -369,14 +367,13 @@ is present in the same directory, it is loaded too.
 
     if mf:
       self.simstate.mapfile = mf
-      self.write('Loaded MAP file "%s"\n' % line)
+      self.write(f'Loaded MAP file "{line}"\n')
 
   def help_loadmap(self): self.write('''\
 LOADMAP <mapfilename>
-This command loads a MAP file with the given filename. Normally,
-a MAP file is loaded when an S19 file is loaded, using the S19
-file's name and an extension of MAP. This command can be used
-to load an alternate MAP file.
+This command loads a MAP file with the given filename. Normally, a MAP file \
+is loaded when an S19 file is loaded, using the S19 file's name and an \
+extension of MAP. This command can be used to load an alternate MAP file.
 ''')
 
   def do_md(self, line):
@@ -392,9 +389,9 @@ to load an alternate MAP file.
 
   def help_md(self): self.write('''\
 MD [<address1> [<address2>]]
-Memory beginning at address1 is displayed up to address2, or for 256 bytes
-if address2 is ommitted. If address1 is ommitted, memory is displayed starting
-from the last display address.
+Memory beginning at address1 is displayed up to address2, or for 256 bytes \
+if address2 is ommitted. If address1 is ommitted, memory is displayed \
+starting from the last display address.
 ''')
 
   def do_mm(self, line):
@@ -427,10 +424,10 @@ from the last display address.
 
   def help_mm(self): self.write('''\
 MM <address> [<value>]
-This command enters memory modify mode at the given address. Each
-byte can be left unchanged by pressing ENTER, or a new value can
-be entered to overwrite the current value. Memory modify mode is
-terminated when a period '.' is entered.
+This command enters memory modify mode at the given address. Each byte can \
+be left unchanged by pressing ENTER, or a new value can be entered to \
+overwrite the current value. Memory modify mode is terminated when a \
+period '.' is entered.
 ''')
 
   def do_move(self, line):
@@ -457,8 +454,8 @@ terminated when a period '.' is entered.
 
   def help_move(self): self.write('''\
 MOVE <address1> <address2> [<dest>]
-Copy memory from address1 through address2 to memory starting at dest. If
-dest is ommitted, it defaults to address+1.
+Copy memory from address1 through address2 to memory starting at dest. \
+If dest is ommitted, it defaults to address+1.
 ''')
 
   def do_p(self, line):
@@ -473,8 +470,8 @@ dest is ommitted, it defaults to address+1.
 
   def help_p(self): self.write('''\
 P
-Proceed to execute code at the current program counter. The cycle
-counter and parallel I/O waveform display are unaffected.
+Proceed to execute code at the current program counter. The cycle counter \
+and parallel I/O waveform display are unaffected.
 ''')
 
   def do_rm(self, line):
@@ -507,20 +504,20 @@ counter and parallel I/O waveform display are unaffected.
       except Exception as detail:
         self.write(str(detail)+'\n')
         return
-      exec('self.simstate.ucState.set%s(val)' % fields[0])
+      exec(f'self.simstate.ucState.set{fields[0]}(val)')
       done = 1
 
     while not done:
       nibbles = 2 if fields[0][0] in 'ABC' else 4
       if fields[0][0] in 'D': curval = self.simstate.ucState.D()
-      else: curval = eval('self.simstate.ucState.%s' % fields[0])
+      else: curval = eval(f'self.simstate.ucState.{fields[0]}')
       try:
         s = self.lineinput(*((('%%s: %%0%dX ' % nibbles) % (fields[0], curval)),))
       except EOFError: return
       try:
         if nibbles == 2: val = getu8(s, self.simstate)
         else: val = getu16(s, self.simstate)
-        exec('self.simstate.ucState.set%s(val)' % fields[0])
+        exec(f'self.simstate.ucState.set{fields[0]}(val)')
         done = 1
       except: pass
     self.simstate.ucState.display(self.write)
@@ -535,10 +532,9 @@ counter and parallel I/O waveform display are unaffected.
   def help_rm(self): self.write('''\
 RM [P|Y|X|A|B|D|C|S [val]]
 With no arguments, this command displays the current register set.
-If a parameter is given, the register with the given name can be
-modified. The third optional argument sets the value of the
-register. If omitted, the current value is printed and a new
-value is accepted from the user.
+If a parameter is given, the register with the given name can be modified.
+The third optional argument sets the value of the register. If omitted, the \
+current value is printed and a new value is accepted from the user.
 ''')
 
   def do_stopwhen(self, line):
@@ -556,9 +552,8 @@ value is accepted from the user.
 
   def help_stopwhen(self): self.write('''\
 STOPWHEN <cycles>
-Execution continues at the current program location and stops either
-when an SWI is encountered or the given number of cycles have been
-executed.
+Execution continues at the current program location and stops either when an \
+SWI is encountered or the given number of cycles have been executed.
 ''')
 
   def do_s(self, line):
@@ -583,9 +578,8 @@ executed.
 
   def help_s(self): self.write('''\
 S
-Skip over subroutine call. This command is equivalent to
-issuing a STOPAT command with the target address equal to
-the last 16-bit value on the stack.
+Skip over subroutine call. This command is equivalent to issuing a STOPAT \
+command with the target address equal to the last 16-bit value on the stack.
 ''')
 
   def do_stopat(self, line):
@@ -634,21 +628,21 @@ Begin execution at the current PC and stop when the given address is reached.
 
   def help_t(self): self.write('''\
 T [n]
-Trace through program execution for 'n' instructions, or just 1 instruction
+Trace through program execution for 'n' instructions, or just 1 instruction \
 if no parameter is specified.
 ''')
 
   def help_tn(self): self.write('''\
 TN [n]
-Trace through program execution for 'n' instructions, or just 1 instruction
-if no parameter is specified. If the next instruction is a branch, it is
-NOT TAKEN regardless of the condition codes state.
+Trace through program execution for 'n' instructions, or just 1 instruction \
+if no parameter is specified. If the next instruction is a branch, it is NOT \
+TAKEN regardless of the condition codes state.
 ''')
 
   def help_ty(self): self.write('''\
 TY [n]
-Trace through program execution for 'n' instructions, or just 1 instruction
-if no parameter is specified. If the next instruction is a branch, it is
+Trace through program execution for 'n' instructions, or just 1 instruction \
+if no parameter is specified. If the next instruction is a branch, it is \
 TAKEN regardless of the condition codes state.
 ''')
 
@@ -663,9 +657,8 @@ TAKEN regardless of the condition codes state.
 
   def help_verf(self): self.write('''\
 VERF <filename>
-This command loads the S19 file specified and compares its contents with
-the current contents of memory. The first discrepancy (if any) is
-reported.
+This command loads the S19 file specified and compares its contents with the \
+current contents of memory. The first discrepancy (if any) is reported.
 ''')
 
   def do_pshb(self, line):
