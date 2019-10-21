@@ -36,7 +36,7 @@
 # is no do_ method.
 #
 # The data member 'self.ruler' sets the character used to draw separator lines
-# in the help messages.  If empty, no ruler line is drawn.  It defaults to "=".
+# in the help messages.  If empty, no ruler line is drawn.  It defaults to '='.
 #
 # If the value of 'self.intro' is nonempty when the cmdloop method is called,
 # it is printed out on interpreter startup.  This value may be overridden
@@ -64,11 +64,11 @@ class Cmdbase:
   ruler = '='
   lastcmd = ''
   cmdqueue = []
-  doc_leader = ""
-  doc_header = "\nDocumented commands (type help <topic>):\n"
-  misc_header = "\nMiscellaneous help topics:\n"
-  undoc_header = "\nUndocumented commands:\n"
-  nohelp = "*** No help on %s\n"
+  doc_leader = ''
+  doc_header = '\nDocumented commands (type help <topic>):\n'
+  misc_header = '\nMiscellaneous help topics:\n'
+  undoc_header = '\nUndocumented commands:\n'
+  nohelp = '*** No help on %s\n'
 
   def __init__(self): self.write = sys.stdout.write
 
@@ -82,8 +82,8 @@ class Cmdbase:
         del self.cmdqueue[0]
       elif self.queue:
         line = self.queue.get()
-        if line is 0: return
-      else: assert 0, "cmdloop has no input queue"
+        if line == 0: return
+      else: assert 0, 'cmdloop has no input queue'
 
       line = self.precmd(line)
       stop = self.onecmd(line)
@@ -179,6 +179,6 @@ class Cmdbase:
       col = cmds_per_line
       for cmd in cmds:
         if col == 0: self.write('\n')
-        self.write( (("%-"+str(cmdlen)+"s") % cmd))
+        self.write( (('%-'+str(cmdlen)+'s') % cmd))
         col = (col+1) % cmds_per_line
       self.write('\n')
