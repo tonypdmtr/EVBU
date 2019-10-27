@@ -15,7 +15,7 @@ Installation:
 
    Copy files under some directory (e.g., evbu)
    Install Python requirements: python -m pip install wxWidgets
-   (As of 2019-10-19 Python 3.8 support is not yet available for that.)
+   (As of 2019-10-27 it also works with Python 3.8)
 
 Main file to run: evbu.py
 
