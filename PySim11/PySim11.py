@@ -88,9 +88,9 @@ class SimState(SafeStruct):
 
     for name, val in Peripherals.items():
       if val[0]:
-        print('Installing %s peripheral...' % name)
-        exec("import %s" % val[1])
-        exec("self.PElist.append(%s.install(self, parentWindow))" % val[1])
+        print(f'Installing {name} peripheral...')
+        exec(f'import {val[1]}')
+        exec(f'self.PElist.append({val[1]}.install(self, parentWindow))')
 
   def fetch8(self):
     PC = self.ucState.PC
@@ -177,19 +177,19 @@ class SimState(SafeStruct):
     return (instr, mode, cycles)
 
   def iexec(self, instr, mode, cycles, parms):
-    if mode == INH: exec("ops.%s(self)" % instr)
+    if mode == INH: exec(f'ops.{instr}(self)')
 
     elif mode in [IMM8, IMM16, EXT, DIR, INDX, INDY]:
-      exec("ops.%s(self, parms[0], parms[1])" % instr)
+      exec(f'ops.{instr}(self, parms[0], parms[1])')
 
     elif mode == REL:
-      exec("ops.%s(self, parms[0])" % instr)
+      exec(f'ops.{instr}(self, parms[0])')
 
     elif mode in [BIT2DIR, BIT2INDX, BIT2INDY]:
-      exec("ops.%s(self, parms[0], parms[1])" % instr)
+      exec(f'ops.{instr}(self, parms[0], parms[1])')
 
     elif mode in [BIT3DIR, BIT3INDX, BIT3INDY]:
-      exec("ops.%s(self, parms[0], parms[1], parms[2])" % instr)
+      exec(f'ops.{instr}(self, parms[0], parms[1], parms[2])')
 
     else: raise ops.InternalError('Unknown instruction mode')
 

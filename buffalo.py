@@ -73,14 +73,14 @@ class BuffaloServices(SafeStruct):
     self.write = evb.write
 
     for tup in FuncList:
-      evb.simstate.VFlist.append(PySim11.ucVirtualFunction(tup[0], eval('self.%s' % tup[1])))
+      evb.simstate.VFlist.append(PySim11.ucVirtualFunction(tup[0], eval(f'self.{tup[1]}')))
 
     for tup in VecList: evb.simstate.ucMemory.writeUns16(tup[0], tup[1])
 
     self.vecint(evb.simstate, force = 1)
 
-  # Initialize the RAM secondary vector table with "JMP >STOPIT"
-  # instructions, except where the user has changed "STOPIT" to their
+  # Initialize the RAM secondary vector table with 'JMP >STOPIT'
+  # instructions, except where the user has changed 'STOPIT' to their
   # own address.
   def vecint(self, simstate, force = 0):
     for addr in range(JSCI, JSCI+3*20, 3):
@@ -88,8 +88,8 @@ class BuffaloServices(SafeStruct):
         simstate.ucMemory.writeUns8(addr, 0x7E)       # JMP instruction
         simstate.ucMemory.writeUns16(addr+1, STOPIT)
 
-  # This gets called when "JMP >STOPIT" is actually executed, i.e., the
-  # user hasn't replaced "STOPIT" with their own address.
+  # This gets called when 'JMP >STOPIT' is actually executed, i.e., the
+  # user hasn't replaced 'STOPIT' with their own address.
 
   def unhandledInt(self, simstate):
     raise UnhandledInterrupt('!!! Unhandled interrupt')
@@ -110,27 +110,27 @@ class BuffaloServices(SafeStruct):
       # functions end in RTS.
       simstate.ucState.push16(simstate.ucMemory, JSCIaddr)
 
-    def intSCI(self, simstate): self.__intdispatch(simstate, 0, "SCI")
-    def intSPIE(self, simstate): self.__intdispatch(simstate, 3, "SPI")
-    def intPAII(self, simstate): self.__intdispatch(simstate, 6, "PAI")
-    def intPAOVI(self, simstate): self.__intdispatch(simstate, 9, "PAOV")
-    def intTOI(self, simstate): self.__intdispatch(simstate, 12, "TOI")
-    def intOC5I(self, simstate): self.__intdispatch(simstate, 15, "OC5")
-    def intOC4I(self, simstate): self.__intdispatch(simstate, 18, "OC4")
-    def intOC3I(self, simstate): self.__intdispatch(simstate, 21, "OC3")
-    def intOC2I(self, simstate): self.__intdispatch(simstate, 24, "OC2")
-    def intOC1I(self, simstate): self.__intdispatch(simstate, 27, "OC1")
-    def intIC4I(self, simstate): self.__intdispatch(simstate, 30, "OC5") # IC4 is the same as OC5
-    def intIC3I(self, simstate): self.__intdispatch(simstate, 30, "IC3")
-    def intIC2I(self, simstate): self.__intdispatch(simstate, 33, "IC2")
-    def intIC1I(self, simstate): self.__intdispatch(simstate, 36, "IC1")
-    def intRTII(self, simstate): self.__intdispatch(simstate, 39, "RTI")
-    def intIRQ(self, simstate): self.__intdispatch(simstate, 42, "IRQ")
-    def intXIRQ(self, simstate): self.__intdispatch(simstate, 45, "XIRQ")
-    def intSWI(self, simstate): self.__intdispatch(simstate, 48, "SWI")
-    def intILLOP(self, simstate): self.__intdispatch(simstate, 51, "ILLOP")
-    def intCOP(self, simstate): self.__intdispatch(simstate, 54, "COP")
-    def intCLOCKMON(self, simstate): self.__intdispatch(simstate, 57, "CLOCKMON")
+    def intSCI(self, simstate): self.__intdispatch(simstate, 0, 'SCI')
+    def intSPIE(self, simstate): self.__intdispatch(simstate, 3, 'SPI')
+    def intPAII(self, simstate): self.__intdispatch(simstate, 6, 'PAI')
+    def intPAOVI(self, simstate): self.__intdispatch(simstate, 9, 'PAOV')
+    def intTOI(self, simstate): self.__intdispatch(simstate, 12, 'TOI')
+    def intOC5I(self, simstate): self.__intdispatch(simstate, 15, 'OC5')
+    def intOC4I(self, simstate): self.__intdispatch(simstate, 18, 'OC4')
+    def intOC3I(self, simstate): self.__intdispatch(simstate, 21, 'OC3')
+    def intOC2I(self, simstate): self.__intdispatch(simstate, 24, 'OC2')
+    def intOC1I(self, simstate): self.__intdispatch(simstate, 27, 'OC1')
+    def intIC4I(self, simstate): self.__intdispatch(simstate, 30, 'OC5') # IC4 is the same as OC5
+    def intIC3I(self, simstate): self.__intdispatch(simstate, 30, 'IC3')
+    def intIC2I(self, simstate): self.__intdispatch(simstate, 33, 'IC2')
+    def intIC1I(self, simstate): self.__intdispatch(simstate, 36, 'IC1')
+    def intRTII(self, simstate): self.__intdispatch(simstate, 39, 'RTI')
+    def intIRQ(self, simstate): self.__intdispatch(simstate, 42, 'IRQ')
+    def intXIRQ(self, simstate): self.__intdispatch(simstate, 45, 'XIRQ')
+    def intSWI(self, simstate): self.__intdispatch(simstate, 48, 'SWI')
+    def intILLOP(self, simstate): self.__intdispatch(simstate, 51, 'ILLOP')
+    def intCOP(self, simstate): self.__intdispatch(simstate, 54, 'COP')
+    def intCLOCKMON(self, simstate): self.__intdispatch(simstate, 57, 'CLOCKMON')
 
   def input(self, simstate):
     try:
@@ -163,7 +163,7 @@ class BuffaloServices(SafeStruct):
     simstate.ucEvents.notifyEvent(simstate.ucEvents.NoCharWait)
 
   def upcase(self, simstate):
-    newstr = ("%c" % simstate.ucState.A).upper()
+    newstr = ('%c' % simstate.ucState.A).upper()
     simstate.ucState.setA(ord(newstr[0]))
 
   def rprint(self, simstate): simstate.ucState.display(self.write)
@@ -211,7 +211,7 @@ class BuffaloServices(SafeStruct):
       count += 1
       addr += 1
     self.write(s+'\n')
-    if count >= 300: self.write("<<<truncated to 300 characters>>>\n")
+    if count >= 300: self.write('<<<truncated to 300 characters>>>\n')
 
   def hexbin(self, simstate):
     try:

@@ -118,14 +118,14 @@ class LAData(wx.Window):
   def GetStartTime(self): return self.startTime
 
   def SetStartTime(self, T):
-    assert repr(type(T)) == "<class 'int'>"
+    assert type(T) is int
     self.startTime = T
     self.Refresh()
 
   def GetDivision(self): return self.division
 
   def SetDivision(self, T):
-    assert repr(type(T)) == "<class 'int'>"
+    assert type(T) is int
     assert T > 0
     self.division = T
     self.UpdateDX()
@@ -134,7 +134,7 @@ class LAData(wx.Window):
   def GetTickSpacing(self): return self.tickSpacing
 
   def SetTickSpacing(self, T):
-    assert repr(type(T)) == "<class 'int'>"
+    assert type(T) is int
     assert T > 0
     self.tickSpacing = T
     self.UpdateDX()
@@ -279,7 +279,7 @@ class LAData(wx.Window):
 
   def Append(self, T, V, autoRefresh=1):
     assert V == 0 or V == 1
-    assert repr(type(T)) == "<class 'int'>"
+    assert type(T) is int
 
     if self.events: assert T > self.events[-1][0]
     self.events.append((T, V))
@@ -297,15 +297,18 @@ class LAData(wx.Window):
   def OnSize(self, event): pass
 
   def LoadFromFile(self, filename):
+    def YouLose(filename):
+      wx.MessageBox(f'{detail.strerror}: "{filename}"', 'You lose', wx.OK|wx.CENTRE)
+
     events = []
     try: fid = open(filename, 'r')
     except IOError as detail:
-      wx.MessageBox('%s: "%s"' % (detail.strerror, detail.filename), "You lose", wx.OK|wx.CENTRE)
+      YouLose(detail.filename)
       return 0
 
     try: lines = fid.readlines()
     except IOError as detail:
-      wx.MessageBox('%s: "%s"' % (detail.strerror, filename), "You lose", wx.OK|wx.CENTRE)
+      YouLose(filename)
       return 0
 
     fid.close()
@@ -321,7 +324,7 @@ class LAData(wx.Window):
       match = pat_c.match(line)
       if match is None:
         if comment_c.match(line) is None:
-          wx.MessageBox('Error at "%s" line %d\nLine is not in the format\n"CYCLE ZeroOrOne"' % (filename, linenum), "Bad file format", wx.OK|wx.CENTRE)
+          wx.MessageBox(f'Error at "{filename}" line {linenum}\nLine is not in the format\n"CYCLE ZeroOrOne"', "Bad file format", wx.OK|wx.CENTRE)
           return 0
         else: continue
 
@@ -330,7 +333,7 @@ class LAData(wx.Window):
 
       if events:
         if cycle <= events[-1][0]:
-          wx.MessageBox('Error at "%s" line %d\nCycle time not in ascending order' % (filename, linenum), "Bad file format", wx.OK|wx.CENTRE)
+          wx.MessageBox(f'Error at "{filename}" line {linenum}\nCycle time not in ascending order', "Bad file format", wx.OK|wx.CENTRE)
           return 0
 
         if val != events[-1][1]: events.append((cycle, val))

@@ -330,7 +330,7 @@ class LAPanel(wx.Panel):
   def GetStartTime(self): return self.startTime
 
   def SetStartTime(self, T):
-    assert repr(type(T)) == "<class 'int'>"
+    assert type(T) is int
     self.startTime = T
     for D in self.waveforms: D.SetStartTime(T)
     self.cursors.SetStartTime(T)
@@ -338,7 +338,7 @@ class LAPanel(wx.Panel):
   def GetDivision(self): return self.division
 
   def SetDivision(self, T):
-    assert repr(type(T)) == "<class 'int'>"
+    assert type(T) is int
     assert T > 0
     self.division = T
     for D in self.waveforms: D.SetDivision(T)

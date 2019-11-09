@@ -13,6 +13,7 @@ def parseInteger(field, simstate=None):
         return val
       except: pass
     if all(x in string.hexdigits for x in field): val = int(field, 16)
+    elif field[:2] == '0x': val = int(field[2:], 16)
     elif field[0] == '$': val = int(field[1:], 16)
     elif field[0] == '%': val = int(field[1:], 2)
     elif field[0] == '&': val = int(field[1:])

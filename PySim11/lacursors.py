@@ -35,18 +35,18 @@ class LACursors(wx.Window):
   def IsEnabled2(self): return self.pos2 is not None
 
   def SetStartTime(self, T):
-    assert repr(type(T)) == "<class 'int'>"
+    assert type(T) is int
     self.startTime = T
     self.Refresh()
 
   def SetDivision(self, T):
-    assert repr(type(T)) == "<class 'int'>"
+    assert type(T) is int
     assert T > 0
     self.division = T
     self.Refresh()
 
   def SetTickSpacing(self, T):
-    assert repr(type(T)) == "<class 'int'>"
+    assert type(T) is int
     assert T > 0
     self.tickSpacing = T
     self.Refresh()
