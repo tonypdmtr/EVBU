@@ -1,8 +1,6 @@
 ## import all of the wxPython GUI package
 import wx
-
 import queue
-
 import types
 import sys
 import string

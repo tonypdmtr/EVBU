@@ -6,9 +6,7 @@ import sys
 import os
 import string
 import cmdbase
-
 from safestruct import *
-
 import EVBUoptions
 from EVBUutil import *
 from G import *

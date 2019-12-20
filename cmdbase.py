@@ -1,3 +1,4 @@
+################################################################################
 # This is the CMD.PY file from the Python 1.5.2 distribution.
 # This has been significantly modified for use with EVBU by Andrew Sterian.
 # As this is not an original work, it is not covered by the license (GPL)
@@ -49,7 +50,7 @@
 #
 # These interpreters use raw_input; thus, if the readline module is loaded,
 # they automatically support Emacs-like command history and editing features.
-#
+################################################################################
 
 import string
 import sys

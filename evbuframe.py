@@ -7,10 +7,8 @@ import os
 import string
 import queue
 import time
-
 from safestruct import *
 import wx
-
 from term import Term
 import EVBUoptions
 from PySim11 import PySim11

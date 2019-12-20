@@ -15,7 +15,6 @@ import getopt
 import string
 import math
 from types import *
-
 from G import *
 from PySim11.G import *
 from PySim11 import PySim11
