@@ -4,7 +4,6 @@ This module is the top-level frame for the logic analyzer window
 
 import wx
 from PySim11.lapanel import LAPanel
-
 from kcmmemory import getkcmmemoryData
 
 ## Create a new frame class, derived from the wxPython Frame.

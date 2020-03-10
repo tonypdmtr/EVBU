@@ -229,7 +229,7 @@ class SimState(SafeStruct):
     # Notify subscribers that a simulation is to begin.
     self.ucEvents.notifyEvent(self.ucEvents.SimStart)
 
-    start_clock = time.clock()
+    start_clock = time.process_time()
     start_cyc = self.cycles
 
     for br in self.BPlist:
@@ -332,7 +332,7 @@ class SimState(SafeStruct):
     # Notify subscribers that a simulation ended
     self.ucEvents.notifyEvent(self.ucEvents.SimEnd)
 
-    stop_clock = time.clock()
+    stop_clock = time.process_time()
     stop_cyc = self.cycles
 
     # Uncomment the following to see how fast the simulator is
