@@ -1,0 +1,78 @@
+[COMMENTS]
+
+Non-blank lines in the FILES section list all filenames
+with an implied filenumber in sequence starting from 1
+Order defines filenumbers used in LINKS section
+
+The LINKS section shows: HexValue FileNumber LineNumber Symbol ByteSize
+if FileNumber is 0 then the symbol is to be treated as EQU
+no Symbol indicates source-line info for a non-labeled line
+The LINKS section is unsorted
+
+[FILES]
+
+rtif_1.asm
+defs.inc
+
+[LINKS]
+
+0000D05D      1     63
+0000D05B      1     62
+0000D059      1     61
+0000D055      1     59
+0000D052      1     58
+0000D050      1     57
+0000D04E      1     56
+0000D04B      1     55
+0000D049      1     54
+0000D047      1     53
+0000D045      1     52
+0000D042      1     51
+0000D040      1     50
+0000D03E      1     49
+0000D039      1     47
+0000D037      1     46
+0000D036      1     45
+0000D033      1     44
+0000D031      1     43
+0000D02E      1     42
+0000D02B      1     41
+0000D029      1     40
+0000D028      1     35
+0000D026      1     34
+0000D025      1     33
+0000D023      1     32
+0000D022      1     31
+0000D020      1     30
+0000D01F      1     29
+0000D01D      1     28
+0000D01A      1     27
+0000D018      1     26
+0000D016      1     25
+0000D014      1     24
+0000D011      1     23
+0000D00F      1     22
+0000D00D      1     21
+0000D00A      1     20
+0000D009      1     19
+0000D007      1     18
+0000D006      1     17
+0000D004      1     16
+0000D003      1     15
+0000D001      1     14
+00000004      0      0  _.D1                0
+00000005      0      0  _.D2                0
+0000D03C      1     48  _12               0
+0000D057      1     60  _22               0
+0000000A      0      0  LF                  0
+0000D000      0      0  DISP16              0
+0000D001      0      0  RTIFISR             0
+0000D029      0      0  MAIN                0
+00000000      0      0  ?DONE               2
+00000002      0      0  _.Z                 0
+0000D000      0      0  DISP8               0
+0000D000      0      0  OUTSTR              0
+0000D000      0      0  INTERRUPTSOFF       0
+0000D000      2     33  INTERRUPTSON        0
+00000003      0      0  _.XY                0
+00000001      0      0  _.TMP               0

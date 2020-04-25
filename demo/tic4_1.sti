@@ -1,0 +1,8 @@
+# Test stimulus file for TIC4_1.S19. Use this as the
+# stimulus file for Port A pin 3 (PA3).
+0 0
+1024 1
+2048 0
+3072 1
+4096 0
+5120 1

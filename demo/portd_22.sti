@@ -1,0 +1,14 @@
+# Stimulus file for use by portd_2.c on PD2
+
+# CYCLETIME VALUE
+0 0
+1200 1
+1600 0
+2000 1
+2400 0
+2800 1
+3200 0
+3600 1
+4000 0
+4400 1
+4800 0

@@ -1,0 +1,95 @@
+[COMMENTS]
+
+Non-blank lines in the FILES section list all filenames
+with an implied filenumber in sequence starting from 1
+Order defines filenumbers used in LINKS section
+
+The LINKS section shows: HexValue FileNumber LineNumber Symbol ByteSize
+if FileNumber is 0 then the symbol is to be treated as EQU
+no Symbol indicates source-line info for a non-labeled line
+The LINKS section is unsorted
+
+[FILES]
+
+tic3_1.asm
+defs.inc
+
+[LINKS]
+
+0000D087      1     81
+0000D085      1     80
+0000D083      1     79
+0000D07F      1     78
+0000D07B      1     76
+0000D079      1     75
+0000D076      1     74
+0000D073      1     73
+0000D071      1     72
+0000D06F      1     71
+0000D06C      1     70
+0000D06A      1     69
+0000D068      1     68
+0000D065      1     67
+0000D063      1     66
+0000D061      1     65
+0000D05D      1     63
+0000D05B      1     62
+0000D058      1     61
+0000D056      1     60
+0000D053      1     59
+0000D051      1     58
+0000D04F      1     57
+0000D04C      1     56
+0000D04A      1     55
+0000D048      1     54
+0000D044      1     52
+0000D042      1     51
+0000D03F      1     50
+0000D03C      1     49
+0000D03A      1     48
+0000D038      1     47
+0000D035      1     46
+0000D032      1     45
+0000D030      1     44
+0000D02F      1     39
+0000D02D      1     38
+0000D02C      1     37
+0000D02A      1     36
+0000D029      1     35
+0000D027      1     34
+0000D026      1     33
+0000D024      1     32
+0000D021      1     31
+0000D01F      1     30
+0000D01D      1     29
+0000D01A      1     28
+0000D018      1     27
+0000D016      1     26
+0000D013      1     25
+0000D011      1     24
+0000D00F      1     23
+0000D00C      1     22
+0000D00B      1     21
+0000D009      1     20
+0000D008      1     19
+0000D006      1     18
+0000D005      1     17
+0000D003      1     16
+00000004      0      0  _.D1                0
+00000005      0      0  _.D2                0
+0000D046      1     53  _12               0
+0000D05F      1     64  _22               0
+0000D07D      1     77  _32               0
+0000D003      0      0  TICISR              0
+0000000A      0      0  LF                  0
+0000D000      0      0  DISP16              0
+0000D030      0      0  MAIN                0
+00000002      0      0  _.Z                 0
+0000D000      0      0  DISP8               0
+0000D000      0      0  OUTSTR              0
+00000000      0      0  ?INTCOUNT           2
+0000D000      0      0  INTERRUPTSOFF       0
+0000D000      2     33  INTERRUPTSON        0
+0000D001      0      0  ?LC0                2
+00000003      0      0  _.XY                0
+00000001      0      0  _.TMP               0

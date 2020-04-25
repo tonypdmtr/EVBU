@@ -1,0 +1,65 @@
+This file briefly describes the files in the EVBU/demo subdirectory.
+
+Compilation Notes
+=================
+
+Note that all source files are accompanied by S19 files that are ready for
+loading into the simulator. You do not need to compile the C files yourself.
+They are there just for reference. In case you do want to recreate the S19
+files, however, the notes below may be of use.
+
+The C source files were compiled with my own distribution of the GCC 68HC11
+port. See the following URL if you are interested in my distribution:
+
+http://claymore.engineer.gvsu.edu/~steriana/courses/226/index.html#GCC6811Stuff
+
+The original GCC 68HC11 port can be obtained from:
+
+http://home.worldnet.fr/~stcarrez/m68hc11_port.html
+
+My distribution comes with a BUFFALO library (libbuffalo.a) that exposes some
+of the BUFFALO service routines as C function calls and provides the
+<buffalo.h> include file.  There are also slight modifications to the linker
+scripts to speed up simulation, as well as a memory.x memory map file suitable
+for use on 68HC11 systems with external RAM up to 0x7FFF.
+
+The command line used to compile each of the C files is documented in the
+makefile in this directory. If you download and use my GCC 68HC11 distribution,
+you should be able to recreate the S19 files exactly.
+
+Demo Files
+==========
+
+Only the source files are listed below. Each source file has an accompanying
+S19 file that is ready for loading into the simulator and a .S file that
+is the assembler output from the compiler. There are also .STI files
+that sometimes accompany programs. These are stimulus files for the
+various waveforms used by the programs. See the header documentation in
+each file for instructions on how to run the program and how to assign
+the stimulus files.
+
+makefile    - Make file for compiling the source programs
+ex1.c       - Demonstrate PA6 oscillating a few times
+ex2.c       - Times changes at PA0 input pin (meant for use with
+              the example.sti stimulus file)
+porta_1.c   - Demonstrate parallel I/O output on Port A
+porta_2.c   - Demonstrate parallel I/O input on Port A
+portb_1.c   - Demonstrate parallel I/O input on Port B
+portc_1.c   - Demonstrate parallel I/O output on Port C
+portc_2.c   - Demonstrate parallel I/O input on Port C
+portd_1.c   - Demonstrate parallel I/O output on Port D
+portd_2.c   - Demonstrate parallel I/O input on Port D
+porte_1.c   - Demonstrate parallel I/O input on Port E
+pacc_1.c    - Demonstrate pulse accumulator overflow
+pacc_2.c    - Demonstrate pulse accumulator interrupt
+rtif_1.c    - Demonstrate real-time timer
+tic1_1.c    - Demonstrate timer input capture 1
+tic2_1.c    - Demonstrate timer input capture 2
+tic3_1.c    - Demonstrate timer input capture 3
+tic4_1.c    - Demonstrate timer input capture 4
+toc1_1.c    - Demonstrate timer output compare 1
+toc2_1.c    - Demonstrate timer output compare 2
+toc3_1.c    - Demonstrate timer output compare 3
+toc4_1.c    - Demonstrate timer output compare 4
+toc5_1.c    - Demonstrate timer output compare 5
+tof_1.c     - Demonstrate timer overflow

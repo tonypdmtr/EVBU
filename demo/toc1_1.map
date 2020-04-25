@@ -1,0 +1,116 @@
+[COMMENTS]
+
+Non-blank lines in the FILES section list all filenames
+with an implied filenumber in sequence starting from 1
+Order defines filenumbers used in LINKS section
+
+The LINKS section shows: HexValue FileNumber LineNumber Symbol ByteSize
+if FileNumber is 0 then the symbol is to be treated as EQU
+no Symbol indicates source-line info for a non-labeled line
+The LINKS section is unsorted
+
+[FILES]
+
+toc1_1.asm
+defs.inc
+
+[LINKS]
+
+0000D0BF      1    101
+0000D0BD      1    100
+0000D0BA      1     99
+0000D0B8      1     98
+0000D0B5      1     97
+0000D0B3      1     96
+0000D0B1      1     95
+0000D0AE      1     94
+0000D0AC      1     93
+0000D0A9      1     91
+0000D0A3      1     89
+0000D0A1      1     88
+0000D09E      1     87
+0000D09B      1     86
+0000D098      1     85
+0000D095      1     84
+0000D093      1     83
+0000D091      1     82
+0000D08E      1     81
+0000D08C      1     80
+0000D089      1     79
+0000D087      1     78
+0000D084      1     77
+0000D082      1     76
+0000D07F      1     75
+0000D07E      1     74
+0000D07C      1     73
+0000D077      1     71
+0000D074      1     70
+0000D072      1     69
+0000D070      1     68
+0000D06D      1     67
+0000D06B      1     66
+0000D069      1     65
+0000D067      1     64
+0000D064      1     63
+0000D062      1     62
+0000D061      1     61
+0000D05C      1     59
+0000D058      1     58
+0000D055      1     57
+0000D052      1     56
+0000D04F      1     55
+0000D04C      1     54
+0000D04A      1     53
+0000D047      1     52
+0000D045      1     51
+0000D042      1     50
+0000D03F      1     49
+0000D03D      1     48
+0000D03B      1     47
+0000D03A      1     46
+0000D037      1     45
+0000D035      1     44
+0000D032      1     43
+0000D02F      1     42
+0000D02D      1     41
+0000D02C      1     36
+0000D02A      1     35
+0000D029      1     34
+0000D027      1     33
+0000D026      1     32
+0000D024      1     31
+0000D023      1     30
+0000D021      1     29
+0000D01E      1     28
+0000D01C      1     27
+0000D019      1     26
+0000D017      1     25
+0000D014      1     24
+0000D011      1     23
+0000D00F      1     22
+0000D00D      1     21
+0000D00A      1     20
+0000D009      1     19
+0000D007      1     18
+0000D006      1     17
+0000D004      1     16
+0000D003      1     15
+0000D001      1     14
+00000004      0      0  _.D1                0
+00000005      0      0  _.D2                0
+0000D05E      1     60  _12               0
+0000D079      1     72  _22               0
+0000D0A6      1     90  _32               0
+0000D0AA      1     92  _42               0
+0000000A      0      0  LF                  0
+0000D001      0      0  TOCISR              0
+0000D000      0      0  DISP16              0
+00000000      0      0  ?FLAG               1
+0000D02D      0      0  MAIN                0
+00000002      0      0  _.Z                 0
+0000D000      0      0  DISP8               0
+0000D000      0      0  OUTSTR              0
+0000D000      0      0  INTERRUPTSOFF       0
+0000D000      2     33  INTERRUPTSON        0
+00000003      0      0  _.XY                0
+00000001      0      0  _.TMP               0

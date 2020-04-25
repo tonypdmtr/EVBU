@@ -1,0 +1,14 @@
+# Stimulus file for use by porte_2.c on PE6
+
+# CYCLETIME VALUE
+0 0
+2800 1
+3200 0
+3600 1
+4000 0
+4400 1
+4800 0
+5200 1
+5600 0
+6000 1
+6400 0

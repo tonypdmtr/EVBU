@@ -1,0 +1,14 @@
+# Stimulus file for use by porta_2.c on PA0
+
+# CYCLETIME VALUE
+0 0
+100 1
+200 0
+300 1
+400 0
+500 1
+600 0
+700 1
+800 0
+900 1
+1000 0

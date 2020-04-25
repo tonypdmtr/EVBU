@@ -1,0 +1,7 @@
+# Test stimulus file for EX2.S19. Use this as the
+# stimulus file for Port A pin 0 (PA0).
+0 0
+1000 1
+2000 0
+3000 1
+4000 0

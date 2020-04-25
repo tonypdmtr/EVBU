@@ -1,0 +1,119 @@
+[COMMENTS]
+
+Non-blank lines in the FILES section list all filenames
+with an implied filenumber in sequence starting from 1
+Order defines filenumbers used in LINKS section
+
+The LINKS section shows: HexValue FileNumber LineNumber Symbol ByteSize
+if FileNumber is 0 then the symbol is to be treated as EQU
+no Symbol indicates source-line info for a non-labeled line
+The LINKS section is unsorted
+
+[FILES]
+
+pacc_1.asm
+defs.inc
+
+[LINKS]
+
+0000D0E5      1    105
+0000D0E4      1    104
+0000D0E0      1    102
+0000D0DE      1    101
+0000D0DB      1    100
+0000D0D8      1     99
+0000D0D5      1     98
+0000D0D2      1     97
+0000D0CF      1     96
+0000D0CC      1     95
+0000D0CA      1     94
+0000D0C8      1     93
+0000D0C6      1     92
+0000D0C1      1     90
+0000D0BF      1     89
+0000D0BD      1     88
+0000D0BA      1     87
+0000D0B8      1     86
+0000D0B3      1     84
+0000D0B1      1     83
+0000D0AE      1     82
+0000D0AB      1     81
+0000D0A9      1     80
+0000D0A6      1     79
+0000D0A3      1     78
+0000D0A1      1     77
+0000D09E      1     76
+0000D09C      1     75
+0000D09A      1     74
+0000D099      1     73
+0000D097      1     72
+0000D095      1     71
+0000D092      1     70
+0000D090      1     69
+0000D08F      1     68
+0000D08D      1     67
+0000D08A      1     66
+0000D086      1     65
+0000D083      1     64
+0000D082      1     63
+0000D081      1     58
+0000D07F      1     57
+0000D07E      1     56
+0000D07C      1     55
+0000D07B      1     54
+0000D079      1     53
+0000D078      1     52
+0000D077      1     51
+0000D076      1     50
+0000D074      1     49
+0000D071      1     48
+0000D06E      1     47
+0000D06C      1     46
+0000D069      1     45
+0000D067      1     44
+0000D065      1     43
+0000D064      1     42
+0000D062      1     41
+0000D05F      1     40
+0000D05D      1     39
+0000D05B      1     38
+0000D05A      1     37
+0000D058      1     36
+0000D055      1     35
+0000D053      1     34
+0000D051      1     33
+0000D04E      1     32
+0000D04B      1     31
+0000D049      1     30
+0000D046      1     29
+0000D043      1     28
+0000D041      1     27
+0000D03F      1     26
+0000D03C      1     25
+0000D03B      1     24
+0000D03A      1     23
+0000D039      1     22
+0000D037      1     21
+0000D036      1     20
+0000D034      1     19
+0000D033      1     18
+0000D031      1     17
+00000004      0      0  _.D1                0
+00000005      0      0  _.D2                0
+0000D0B6      1     85  _12               0
+00000000      0      0  ?GOTOV              2
+0000000A      0      0  LF                  0
+0000D000      0      0  DISP16              0
+0000D0E2      1    103  DONE2             0
+0000D082      0      0  MAIN                0
+00000002      0      0  _.Z                 0
+0000D000      0      0  DISP8               0
+0000D031      0      0  PAOVFISR            0
+0000D0C3      1     91  LOOP2             0
+0000D000      0      0  OUTSTR              0
+0000D000      0      0  INTERRUPTSOFF       0
+0000D000      2     33  INTERRUPTSON        0
+0000D001      0      0  ?LC0                46
+00000003      0      0  _.XY                0
+00000001      0      0  _.TMP               0
+0000D02F      0      0  ?LC1                2

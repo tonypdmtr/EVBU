@@ -1,0 +1,65 @@
+[COMMENTS]
+
+Non-blank lines in the FILES section list all filenames
+with an implied filenumber in sequence starting from 1
+Order defines filenumbers used in LINKS section
+
+The LINKS section shows: HexValue FileNumber LineNumber Symbol ByteSize
+if FileNumber is 0 then the symbol is to be treated as EQU
+no Symbol indicates source-line info for a non-labeled line
+The LINKS section is unsorted
+
+[FILES]
+
+ex2.asm
+defs.inc
+
+[LINKS]
+
+0000D05D      1     47
+0000D05C      1     46
+0000D05A      1     45
+0000D059      1     44
+0000D057      1     43
+0000D055      1     42
+0000D051      1     41
+0000D04F      1     40
+0000D04E      1     39
+0000D04C      1     38
+0000D049      1     37
+0000D047      1     36
+0000D045      1     35
+0000D042      1     34
+0000D040      1     33
+0000D03D      1     32
+0000D03C      1     31
+0000D03A      1     30
+0000D037      1     29
+0000D036      1     28
+0000D034      1     27
+0000D032      1     26
+0000D02D      1     24
+0000D02C      1     23
+0000D027      1     21
+0000D025      1     20
+0000D023      1     19
+0000D020      1     18
+0000D01F      1     17
+0000D01D      1     16
+0000D01C      1     15
+00000004      0      0  _.D1                0
+00000005      0      0  _.D2                0
+0000D02F      1     25  _11               0
+0000000A      0      0  LF                  0
+0000D000      0      0  DISP16              0
+0000D01C      0      0  MAIN                0
+00000002      0      0  _.Z                 0
+0000D000      0      0  DISP8               0
+0000D029      1     22  LOOP1             0
+0000D000      0      0  OUTSTR              0
+0000D000      0      0  INTERRUPTSOFF       0
+0000D000      2     33  INTERRUPTSON        0
+0000D001      0      0  ?LC0                25
+00000003      0      0  _.XY                0
+00000001      0      0  _.TMP               0
+0000D01A      0      0  ?LC1                2

@@ -1,0 +1,103 @@
+[COMMENTS]
+
+Non-blank lines in the FILES section list all filenames
+with an implied filenumber in sequence starting from 1
+Order defines filenumbers used in LINKS section
+
+The LINKS section shows: HexValue FileNumber LineNumber Symbol ByteSize
+if FileNumber is 0 then the symbol is to be treated as EQU
+no Symbol indicates source-line info for a non-labeled line
+The LINKS section is unsorted
+
+[FILES]
+
+pacc_2.asm
+defs.inc
+
+[LINKS]
+
+0000D0BC      1     89
+0000D0BB      1     88
+0000D0B9      1     87
+0000D0B7      1     86
+0000D0B2      1     84
+0000D0B0      1     83
+0000D0AD      1     82
+0000D0AA      1     81
+0000D0A8      1     80
+0000D0A5      1     79
+0000D0A2      1     78
+0000D0A0      1     77
+0000D09D      1     76
+0000D09B      1     75
+0000D099      1     74
+0000D098      1     73
+0000D096      1     72
+0000D095      1     71
+0000D092      1     70
+0000D090      1     69
+0000D08F      1     68
+0000D08D      1     67
+0000D08A      1     66
+0000D086      1     65
+0000D083      1     64
+0000D082      1     63
+0000D081      1     58
+0000D07F      1     57
+0000D07E      1     56
+0000D07C      1     55
+0000D07B      1     54
+0000D079      1     53
+0000D078      1     52
+0000D077      1     51
+0000D076      1     50
+0000D074      1     49
+0000D072      1     48
+0000D06F      1     47
+0000D06D      1     46
+0000D06A      1     45
+0000D068      1     44
+0000D066      1     43
+0000D065      1     42
+0000D063      1     41
+0000D060      1     40
+0000D05E      1     39
+0000D05C      1     38
+0000D05B      1     37
+0000D059      1     36
+0000D056      1     35
+0000D054      1     34
+0000D052      1     33
+0000D04F      1     32
+0000D04C      1     31
+0000D04A      1     30
+0000D047      1     29
+0000D044      1     28
+0000D042      1     27
+0000D040      1     26
+0000D03D      1     25
+0000D03C      1     24
+0000D03B      1     23
+0000D03A      1     22
+0000D038      1     21
+0000D037      1     20
+0000D035      1     19
+0000D034      1     18
+0000D032      1     17
+00000004      0      0  _.D1                0
+00000005      0      0  _.D2                0
+0000D0B5      1     85  _12               0
+0000D032      0      0  PAIFISR             0
+00000000      0      0  ?GOTOV              1
+0000000A      0      0  LF                  0
+0000D000      0      0  DISP16              0
+0000D082      0      0  MAIN                0
+00000002      0      0  _.Z                 0
+0000D000      0      0  DISP8               0
+0000D000      0      0  OUTSTR              0
+0000D000      0      0  INTERRUPTSOFF       0
+0000D000      2     33  INTERRUPTSON        0
+0000D001      0      0  ?LC0                47
+00000003      0      0  _.XY                0
+00000001      0      0  _.TMP               0
+0000D030      0      0  ?LC1                2
