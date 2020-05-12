@@ -9,7 +9,7 @@ Quick Start
 Requirements:
 
   - Python 3.7.3 or later
-  - wxPython 4.0.4 or later
+  - wxPython 4.0.4 or later   (pip install wxWidgets)
 
 Installation:
 
