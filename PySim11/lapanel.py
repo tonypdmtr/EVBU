@@ -670,13 +670,14 @@ class LAPanel(wx.Panel):
 
     self.waveformMenu.Enable(401, not sim) # Add waveform
 
-    self.viewMenu.Enable(201, not sim)   # Zero
-    self.viewMenu.Enable(211, not sim)   # +div
-    self.viewMenu.Enable(212, not sim)   # -div
-    self.viewMenu.Enable(203, not sim)   # Zoom in
-    self.viewMenu.Enable(204, not sim)   # Zoom out
-    self.viewMenu.Enable(205, not sim)   # Zoom all
-    self.viewMenu.Enable(206, not sim)   # Zoom max
+    f = self.viewMenu.Enable
+    f(201, not sim)   # Zero
+    f(211, not sim)   # +div
+    f(212, not sim)   # -div
+    f(203, not sim)   # Zoom in
+    f(204, not sim)   # Zoom out
+    f(205, not sim)   # Zoom all
+    f(206, not sim)   # Zoom max
 
     if not sim:
       for w in self.waveforms: w.RefreshData()

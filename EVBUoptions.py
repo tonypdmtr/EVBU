@@ -53,19 +53,19 @@ def parseArgs(arglist = None):
     usage(arglist)
 
   for item in optlist:
-    if item[0] in ['-h','-H','--help']:
+    if (w := item[0]) in ['-h','-H','--help']:
       usage(arglist)
-    elif item[0] in ['-v','--version']:
+    elif w in ['-v','--version']:
       print('EVBU Version %d.%d' % (EVBUVersionMajor, EVBUVersionMinor))
       print('PySim11 Version %d.%d' % (PySim11.PySim11VersionMajor, PySim11.PySim11VersionMinor))
       sys.exit(0)
-    elif item[0] == '--use-swi': UseSWI = 1
-    elif item[0] == '--no-buffalo': UseBuffaloServices = 0
-    elif item[0] == '--no-timer': Peripherals['Timer'][0] = 0
-    elif item[0] == '--no-pio': Peripherals['ParallelIO'][0] = 0
-    elif item[0] in ['-s','--start']: StartPC = int(item[1],0)
+    elif w == '--use-swi': UseSWI = 1
+    elif w == '--no-buffalo': UseBuffaloServices = 0
+    elif w == '--no-timer': Peripherals['Timer'][0] = 0
+    elif w == '--no-pio': Peripherals['ParallelIO'][0] = 0
+    elif w in ['-s','--start']: StartPC = int(item[1],0)
     else:
-      print('UNKNOWN OPTION:', item[0])
+      print('UNKNOWN OPTION:', w)
       sys.exit(1)
 
   if len(args) > 0: S19FileName = args[0]

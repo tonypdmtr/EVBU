@@ -321,7 +321,7 @@ class LAData(wx.Window):
       match = pat_c.match(line)
       if match is None:
         if comment_c.match(line) is None:
-          wx.MessageBox('Error at "%s" line %d\nLine is not in the format\n"CYCLE ZeroOrOne"' % (filename, linenum), "Bad file format", wx.OK|wx.CENTRE)
+          wx.MessageBox(f'Error at "{filename}" line {linenum}\nLine is not in the format\n"CYCLE ZeroOrOne"', "Bad file format", wx.OK|wx.CENTRE)
           return 0
         else: continue
 

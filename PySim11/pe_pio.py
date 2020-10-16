@@ -20,7 +20,7 @@ The following are NOT handled:
 * SPI/SCI are not considered so all bits of Port D
   are assumed to be available for general purpose I/O.
 
-* A/D is not considered to all bits of Port E are
+* A/D is not considered so all bits of Port E are
   assumed to be unconstrained and available for
   general purpose input.
 
