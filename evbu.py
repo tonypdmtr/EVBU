@@ -131,7 +131,7 @@ ommitted, disassembly continues from the last disassembled address.
     for line in range(min_line, max_line+1):
       try: addr_s = '%04X' % mapfile.linemap[(fnum+1, line)][0]
       except: addr_s = '    '
-      self.write("%5d %s %3s %s" % (line, addr_s, '=>' if linenum == line else '', lines[line-1]))
+      self.write("%5d %s %3s %s" % (line, addr_s, '==>' if linenum == line else '', lines[line-1]))
 
   def help_l(self): self.write('''\
 L [<num>]
