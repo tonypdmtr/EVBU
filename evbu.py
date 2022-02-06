@@ -680,6 +680,83 @@ This command pushes the 8-bit 'byte' parameter onto the stack.
       return
     self.simstate.ucState.push16(self.simstate.ucMemory, val)
 
+  def do_r(self, line):
+    "Show registers"
+    reg = self.simstate.ucState
+    D = reg.A*256+reg.B
+    self.write('Registers\n---------\n')
+    self.write(f'''PC  {reg.PC:5}  ${('0000'+hex(reg.PC)[2:])[-4:]:4}  %{('0000000000000000'+bin(reg.PC)[2:])[-16:]:16}\n''')
+    self.write(f'''D   {D:5}  ${('0000'+hex(D)[2:])[-4:]:4}  %{('0000000000000000'+bin(D)[2:])[-16:]:16}\n''')
+    self.write(f'''A   {reg.A:5}    ${('0000'+hex(reg.A)[2:])[-2:]:2}          %{('0000000000000000'+bin(reg.A)[2:])[-8:]:16}\n''')
+    self.write(f'''B   {reg.B:5}    ${('0000'+hex(reg.B)[2:])[-2:]:2}          %{('0000000000000000'+bin(reg.B)[2:])[-8:]:16}\n''')
+    self.write(f'''X   {reg.X:5}  ${('0000'+hex(reg.X)[2:])[-4:]:4}  %{('0000000000000000'+bin(reg.X)[2:])[-16:]:16}\n''')
+    self.write(f'''Y   {reg.Y:5}  ${('0000'+hex(reg.Y)[2:])[-4:]:4}  %{('0000000000000000'+bin(reg.Y)[2:])[-16:]:16}\n''')
+    self.write(f'''SP  {reg.SP:5}  ${('0000'+hex(reg.SP)[2:])[-4:]:4}  %{('0000000000000000'+bin(reg.SP)[2:])[-16:]:16}\n''')
+    self.write(f'''CCR {reg.CC:5}    ${('0000'+hex(reg.CC)[2:])[-2:]:2}          %{('0000000000000000'+bin(reg.CC)[2:])[-8:]:16}\n''')
+
+  def do_pc(self, line):
+    "PC word"
+    try: val = getu16(line, self.simstate)
+    except Exception as detail:
+      self.write(str(detail)+'\n')
+      return
+    self.simstate.ucState.PC = val
+
+  def do_sp(self, line):
+    "SP word"
+    try: val = getu16(line, self.simstate)
+    except Exception as detail:
+      self.write(str(detail)+'\n')
+      return
+    self.simstate.ucState.SP = val
+
+  def do_a(self, line):
+    "A byte"
+    try: val = getu8(line, self.simstate)
+    except Exception as detail:
+      self.write(str(detail)+'\n')
+      return
+    self.simstate.ucState.A = val
+
+  def do_b(self, line):
+    "B byte"
+    try: val = getu8(line, self.simstate)
+    except Exception as detail:
+      self.write(str(detail)+'\n')
+      return
+    self.simstate.ucState.B = val
+
+  def do_d(self, line):
+    "D word"
+    try: val = getu16(line, self.simstate)
+    except Exception as detail:
+      self.write(str(detail)+'\n')
+      return
+    self.simstate.ucState.A = val // 256
+    self.simstate.ucState.B = val % 256
+
+  def do_x(self, line):
+    "X word"
+    try: val = getu16(line, self.simstate)
+    except Exception as detail:
+      self.write(str(detail)+'\n')
+      return
+    self.simstate.ucState.X = val
+
+  def do_y(self, line):
+    "Y word"
+    try: val = getu16(line, self.simstate)
+    except Exception as detail:
+      self.write(str(detail)+'\n')
+      return
+    self.simstate.ucState.Y = val
+
+  def help_pshw(self): self.write('''\
+PSHW word
+This command pushes the 16-bit 'word' parameter onto the stack.
+''')
+
+
   def help_pshw(self): self.write('''\
 PSHW word
 This command pushes the 16-bit 'word' parameter onto the stack.
@@ -707,6 +784,11 @@ T        -- Single-step instructions  |  sym     : Symbol if MAP file loaded
 TN       -- Skip next branch          |
 TY       -- Take next branch          | Default base is hexadecimal. The
                                       | leading $ sign is optional.
+R        -- Register overview         |
+D        -- Set register D value      | A     -- Set register A value
+X        -- Set register X value      | B     -- Set register B value
+Y        -- Set register Y value      | CCR   -- Set register CCR value
+SP       -- Set register SP value
 ''')
 
 def main():
