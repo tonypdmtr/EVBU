@@ -6,6 +6,7 @@ import string
 
 # Service routines to parse strings into integers and verify them
 def parseInteger(field, simstate=None):
+  symbol = False
   try:
     if simstate and simstate.mapfile:
       try:
@@ -19,9 +20,11 @@ def parseInteger(field, simstate=None):
     elif field[0] == '&': val = int(field[1:])
     elif field[0] == '-': val = int(field)
     elif field[0] == '@': val = int(field[1:], 8)
-    else: raise ValueError
+    else:
+      symbol = True
+      raise ValueError
     return val
-  except: raise ValueError(f'Invalid integer: "{field}"')
+  except: raise ValueError(f'Uknown symbol "{field}"' if symbol else f'Invalid integer: "{field}"')
 
 def parseu32(field):
   val = parseInteger(field)
